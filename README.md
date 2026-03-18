@@ -1,41 +1,24 @@
-# BC WildWatch (MERN-style campus safety app)
+# BC WildWatch Monorepo Structure
 
-BC WildWatch is a campus reporting web app where students can submit wildlife and danger sightings (snakes, bees, fires, etc.) and immediately inform the campus community.
+This repository is now split into separate top-level folders for the frontend and backend.
 
-## Core behavior
+## Folders
 
-- **Student login with campus Microsoft email** via a dedicated login screen.
-- **Severity routing**:
-  - **High** → security (WhatsApp/SMS queue)
-  - **Low/Medium** → faculty queue
-- **Campus-wide visibility** of reports to increase awareness.
-- **Anonymous student view** for privacy.
-- **Faculty/Admin identity visibility** so staff can follow up with reporters.
+- `frontend/` – Next.js web app (existing BC WildWatch UI + API routes).
+- `backend/` – Dedicated backend workspace for a future standalone service.
 
-## Tech notes
+## Getting started
 
-This implementation keeps the app fully JavaScript/TypeScript + React + Node style and is structured for MERN migration:
-
-- React/Next.js UI (client-driven dashboard)
-- Node-based API routes for auth/session/reporting
-- Data layer abstraction in `lib/store.ts` (currently file-backed, replaceable with MongoDB)
-
-## Environment variables
-
-Create `.env.local`:
+### Frontend
 
 ```bash
-MICROSOFT_TENANT_DOMAIN=bcwildwatch.edu
-SESSION_SECRET=replace-with-long-random-secret
-FACULTY_EMAILS=faculty1@bcwildwatch.edu,faculty2@bcwildwatch.edu
-ADMIN_EMAILS=admin@bcwildwatch.edu
-```
-
-## Run
-
-```bash
+cd frontend
 npm install
 npm run dev
 ```
 
 Then open `http://localhost:3000`.
+
+### Backend
+
+The backend folder is scaffolded and ready for implementation.
