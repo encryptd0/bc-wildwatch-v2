@@ -1,1 +1,28 @@
-[]
+[
+  {
+    "id": "5a512e9b-6e0e-4409-a783-abb5aa5a1ce7",
+    "category": "Animal",
+    "type": "Snake",
+    "location": "South",
+    "notes": "Blue",
+    "severity": "Medium",
+    "createdAt": "2026-03-18T17:33:56.062Z",
+    "reporterName": "Riekus",
+    "reporterEmail": "601246@student.belgiumcampus.ac.za",
+    "notificationTarget": "faculty",
+    "notificationChannel": "faculty_queue"
+  },
+  {
+    "id": "c8d88448-9aff-43c9-b032-1ce43e8cee70",
+    "category": "Animal",
+    "type": "Snake",
+    "location": "North",
+    "notes": "Looks green",
+    "severity": "High",
+    "createdAt": "2026-03-18T17:32:06.488Z",
+    "reporterName": "Riekus",
+    "reporterEmail": "601246@student.belgiumcampus.ac.za",
+    "notificationTarget": "security",
+    "notificationChannel": "sms_or_whatsapp"
+  }
+]

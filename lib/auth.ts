@@ -4,7 +4,7 @@ import { SessionUser, UserRole } from "./types";
 
 const COOKIE_NAME = "bcww_session";
 const SESSION_SECRET = process.env.SESSION_SECRET ?? "dev-secret-change-me";
-const CAMPUS_DOMAIN = process.env.MICROSOFT_TENANT_DOMAIN ?? "bcwildwatch.edu";
+const CAMPUS_DOMAIN = process.env.MICROSOFT_TENANT_DOMAIN ?? "student.belgiumcampus.ac.za";
 
 function getRole(email: string): UserRole {
   const adminEmails = (process.env.ADMIN_EMAILS ?? "").split(",").map((item) => item.trim().toLowerCase()).filter(Boolean);
