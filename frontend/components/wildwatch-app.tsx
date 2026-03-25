@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import QRCode from "qrcode";
 import { PublicSighting, SessionUser, Severity, SightingCategory } from "@/lib/types";
 
 type NewSightingForm = {
@@ -9,6 +11,16 @@ type NewSightingForm = {
   location: string;
   notes: string;
   severity: Severity;
+};
+
+type LoginResponse = {
+  user?: SessionUser;
+  error?: string;
+  requiresTwoFactor?: boolean;
+  challengeToken?: string;
+  setupRequired?: boolean;
+  setupKey?: string;
+  setupUri?: string;
 };
 
 const initialForm: NewSightingForm = {
@@ -24,6 +36,12 @@ export function WildWatchApp() {
   const [sightings, setSightings] = useState<PublicSighting[]>([]);
   const [loginName, setLoginName] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
+  const [loginOtpCode, setLoginOtpCode] = useState("");
+  const [challengeToken, setChallengeToken] = useState<string | null>(null);
+  const [setupRequired, setSetupRequired] = useState(false);
+  const [setupKey, setSetupKey] = useState("");
+  const [setupUri, setSetupUri] = useState("");
+  const [setupQrCodeDataUrl, setSetupQrCodeDataUrl] = useState("");
   const [form, setForm] = useState<NewSightingForm>(initialForm);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
@@ -54,6 +72,32 @@ export function WildWatchApp() {
     })();
   }, []);
 
+  useEffect(() => {
+    let isActive = true;
+
+    if (!setupUri) {
+      return () => {
+        isActive = false;
+      };
+    }
+
+    void QRCode.toDataURL(setupUri, { width: 220, margin: 1 })
+      .then((value) => {
+        if (isActive) {
+          setSetupQrCodeDataUrl(value);
+        }
+      })
+      .catch(() => {
+        if (isActive) {
+          setSetupQrCodeDataUrl("");
+        }
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [setupUri]);
+
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setMessage("");
@@ -64,20 +108,64 @@ export function WildWatchApp() {
       body: JSON.stringify({ name: loginName, email: loginEmail }),
     });
 
-    const data = (await res.json()) as { error?: string };
+    const data = (await res.json()) as LoginResponse;
     if (!res.ok) {
       setMessage(data.error ?? "Login failed");
       return;
     }
 
+    if (!data.requiresTwoFactor || !data.challengeToken) {
+      setMessage("Unable to start 2FA sign-in.");
+      return;
+    }
+
+    setChallengeToken(data.challengeToken);
+    setSetupRequired(Boolean(data.setupRequired));
+    setSetupKey(data.setupKey ?? "");
+    setSetupUri(data.setupUri ?? "");
+    setLoginOtpCode("");
+    setMessage(data.setupRequired ? "Set up your authenticator app and enter the 6-digit code." : "Enter your 6-digit authenticator code.");
+  }
+
+  async function handleVerifyTwoFactor(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setMessage("");
+
+    if (!challengeToken) {
+      setMessage("2FA challenge expired. Start sign-in again.");
+      return;
+    }
+
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ challengeToken, otpCode: loginOtpCode }),
+    });
+
+    const data = (await res.json()) as LoginResponse;
+    if (!res.ok) {
+      setMessage(data.error ?? "2FA verification failed");
+      return;
+    }
+
     setLoginName("");
     setLoginEmail("");
+    setLoginOtpCode("");
+    setChallengeToken(null);
+    setSetupRequired(false);
+    setSetupKey("");
+    setSetupUri("");
     await refreshSessionAndData();
   }
 
   async function handleLogout() {
     await fetch("/api/auth/logout", { method: "POST" });
     setForm(initialForm);
+    setChallengeToken(null);
+    setSetupRequired(false);
+    setSetupKey("");
+    setSetupUri("");
+    setLoginOtpCode("");
     await refreshSessionAndData();
   }
 
@@ -111,30 +199,78 @@ export function WildWatchApp() {
       <main className="mx-auto flex min-h-screen max-w-5xl items-center justify-center p-8">
         <section className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
           <h1 className="text-3xl font-bold text-slate-900">BC WildWatch</h1>
-          <p className="mt-2 text-sm text-slate-600">Sign in with your campus Microsoft account to view and report sightings.</p>
+          <p className="mt-2 text-sm text-slate-600">Sign in with your campus email and a 2FA authenticator code.</p>
 
-          <form onSubmit={handleLogin} className="mt-6 space-y-3">
-            <input
-              className="w-full rounded-md border border-slate-300 px-3 py-2"
-              placeholder="Full name"
-              value={loginName}
-              onChange={(event) => setLoginName(event.target.value)}
-              required
-            />
-            <input
-              className="w-full rounded-md border border-slate-300 px-3 py-2"
-              type="email"
-              placeholder="Campus Microsoft email"
-              value={loginEmail}
-              onChange={(event) => setLoginEmail(event.target.value)}
-              required
-            />
-            <button className="w-full rounded-md bg-blue-600 px-3 py-2 font-medium text-white hover:bg-blue-700" type="submit">
-              Continue with Microsoft Account
-            </button>
-          </form>
+          {!challengeToken ? (
+            <form onSubmit={handleLogin} className="mt-6 space-y-3">
+              <input
+                className="w-full rounded-md border border-slate-300 px-3 py-2"
+                placeholder="Full name"
+                value={loginName}
+                onChange={(event) => setLoginName(event.target.value)}
+                required
+              />
+              <input
+                className="w-full rounded-md border border-slate-300 px-3 py-2"
+                type="email"
+                placeholder="Campus email"
+                value={loginEmail}
+                onChange={(event) => setLoginEmail(event.target.value)}
+                required
+              />
+              <button className="w-full rounded-md bg-blue-600 px-3 py-2 font-medium text-white hover:bg-blue-700" type="submit">
+                Continue to 2FA
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleVerifyTwoFactor} className="mt-6 space-y-3">
+              {setupRequired ? (
+                <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">
+                  <p className="font-semibold">First-time 2FA setup</p>
+                  <p className="mt-1">Scan this QR code in your authenticator app:</p>
+                  <div className="mt-2 flex justify-center rounded bg-white p-2">
+                    {setupQrCodeDataUrl ? (
+                      <Image src={setupQrCodeDataUrl} alt="2FA setup QR code" width={176} height={176} unoptimized />
+                    ) : (
+                      <p className="py-16 text-[11px] text-slate-500">Generating QR code...</p>
+                    )}
+                  </div>
+                  <p className="mt-1">Add this key in your authenticator app:</p>
+                  <p className="mt-1 break-all rounded bg-white px-2 py-1 font-mono text-[11px] text-slate-900">{setupKey}</p>
+                </div>
+              ) : null}
 
-          <p className="mt-4 text-xs text-slate-500">Only campus-managed Microsoft emails are accepted.</p>
+              <input
+                className="w-full rounded-md border border-slate-300 px-3 py-2"
+                inputMode="numeric"
+                pattern="[0-9]{6}"
+                maxLength={6}
+                placeholder="6-digit authenticator code"
+                value={loginOtpCode}
+                onChange={(event) => setLoginOtpCode(event.target.value.replace(/\D/g, ""))}
+                required
+              />
+              <button className="w-full rounded-md bg-blue-600 px-3 py-2 font-medium text-white hover:bg-blue-700" type="submit">
+                Verify and Sign In
+              </button>
+              <button
+                className="w-full rounded-md border border-slate-300 px-3 py-2 font-medium text-slate-700 hover:bg-slate-50"
+                type="button"
+                onClick={() => {
+                  setChallengeToken(null);
+                  setSetupRequired(false);
+                  setSetupKey("");
+                  setSetupUri("");
+                  setLoginOtpCode("");
+                  setMessage("");
+                }}
+              >
+                Back
+              </button>
+            </form>
+          )}
+
+          <p className="mt-4 text-xs text-slate-500">Only campus-managed emails are accepted, and 2FA is required.</p>
           {message ? <p className="mt-4 text-sm text-red-600">{message}</p> : null}
         </section>
       </main>
