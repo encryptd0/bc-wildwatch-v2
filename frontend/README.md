@@ -29,7 +29,15 @@ MICROSOFT_TENANT_DOMAIN=bcwildwatch.edu
 SESSION_SECRET=replace-with-long-random-secret
 FACULTY_EMAILS=faculty1@bcwildwatch.edu,faculty2@bcwildwatch.edu
 ADMIN_EMAILS=admin@bcwildwatch.edu
+TWO_FACTOR_ISSUER=BC WildWatch
 ```
+
+## Two-factor authentication (no Entra dependency)
+
+- Login is now a 2-step flow: campus email + authenticator TOTP code.
+- On first sign-in, each campus email gets a unique setup key.
+- Add the setup key to an authenticator app (Google Authenticator, Microsoft Authenticator, Authy, etc.) and enter the generated 6-digit code.
+- 2FA secrets are stored in `data/two-factor-users.json` for this project.
 
 ## Run
 
