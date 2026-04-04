@@ -1,0 +1,73 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<main class="chatbot-main">
+  <div class="chatbot-container">
+    <!-- Sidebar -->
+    <div class="chatbot-sidebar">
+      <div class="sidebar-header">
+        <div class="bot-avatar"><i class="fa-solid fa-robot"></i></div>
+        <div>
+          <h3>WildWatch Assistant</h3>
+          <span class="bot-status"><i class="fa-solid fa-circle" style="font-size:.6em; color:#6EE7B7"></i> Online</span>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <h4>Suggested Questions</h4>
+        <div class="suggested-questions">
+          <button class="suggestion-btn" onclick="sendSuggestion(this)">What should I do if I see a snake?</button>
+          <button class="suggestion-btn" onclick="sendSuggestion(this)">How dangerous are bees on campus?</button>
+          <button class="suggestion-btn" onclick="sendSuggestion(this)">Who do I contact for emergencies?</button>
+          <button class="suggestion-btn" onclick="sendSuggestion(this)">How do I report an incident?</button>
+          <button class="suggestion-btn" onclick="sendSuggestion(this)">What areas are high risk?</button>
+          <button class="suggestion-btn" onclick="sendSuggestion(this)">What to do if bitten by a spider?</button>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <h4>Emergency Contact</h4>
+        <div class="emergency-info">
+          <p><i class="fa-solid fa-triangle-exclamation"></i> Campus Security</p>
+          <p class="emergency-number">Ext. 101</p>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <button onclick="clearChat()" class="btn btn-outline btn-sm btn-full"><i class="fa-solid fa-trash"></i> Clear Chat</button>
+      </div>
+    </div>
+
+    <!-- Chat Area -->
+    <div class="chatbot-chat">
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-message bot-message">
+          <div class="message-avatar"><i class="fa-solid fa-robot"></i></div>
+          <div class="message-bubble">
+            <p>Hello! I'm <strong>WildWatch Assistant</strong>, your campus animal safety chatbot.</p>
+            <p>I can help you with safety advice for animals on campus, tell you what to do in emergencies, and guide you through the reporting process.</p>
+            <p>How can I help you today?</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typing indicator -->
+      <div class="typing-indicator" id="typingIndicator" style="display:none;">
+        <div class="message-avatar"><i class="fa-solid fa-robot"></i></div>
+        <div class="typing-bubble">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
+
+      <!-- Input area -->
+      <div class="chat-input-area">
+        <textarea id="chatInput" placeholder="Ask me about campus animal safety..." rows="1" onkeydown="handleKeyDown(event)" oninput="autoResize(this)"></textarea>
+        <button onclick="sendMessage()" class="send-btn" id="sendBtn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="/js/chatbot.js"></script>
+<%- include('partials/footer') %>

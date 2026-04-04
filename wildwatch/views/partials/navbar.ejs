@@ -1,0 +1,78 @@
+<nav class="navbar" id="navbar">
+  <div class="navbar-inner">
+    <a href="/home" class="brand-link">
+      <div class="brand-icon">
+        <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f981.png" alt="BC WildWatch" class="brand-img">
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">BC WildWatch<sup>™</sup></span>
+        <span class="brand-sub">Campus Safety</span>
+      </div>
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/home" class="nav-link">Home</a></li>
+      <li><a href="/my-reports" class="nav-link">My Reports</a></li>
+      <li><a href="/chatbot" class="nav-link">AI Chatbot</a></li>
+      <li><a href="/qr" class="nav-link">QR Code</a></li>
+      <% if (locals.sessionUser) { %>
+        <li><a href="/admin" class="nav-link nav-link-admin">Admin</a></li>
+        <li class="nav-session-item">
+          <span class="nav-session-name"><i class="fa-solid fa-user-shield"></i> <%= sessionUser.name.split(' ')[0] %></span>
+          <form action="/auth/logout" method="POST" class="nav-logout-form">
+            <button type="submit" class="nav-logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+          </form>
+        </li>
+      <% } else { %>
+        <li><a href="/admin" class="nav-link nav-link-admin">Admin</a></li>
+      <% } %>
+      <li><a href="/report" class="nav-link nav-link-report"><i class="fa-solid fa-triangle-exclamation"></i> Report</a></li>
+    </ul>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+  </div>
+</nav>
+
+<script>
+(function() {
+  var toggle = document.getElementById('navToggle');
+  var links  = document.getElementById('navLinks');
+  var navbar = document.getElementById('navbar');
+
+  toggle.addEventListener('click', function() {
+    var open = links.classList.toggle('nav-open');
+    toggle.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+
+  links.querySelectorAll('.nav-link').forEach(function(a) {
+    a.addEventListener('click', function() {
+      links.classList.remove('nav-open');
+      toggle.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Transparent navbar on hero pages
+  var path = window.location.pathname;
+  if (path === '/home' || path === '/') {
+    navbar.classList.add('navbar-hero');
+  }
+
+  window.addEventListener('scroll', function() {
+    var scrolled = window.scrollY > 60;
+    navbar.classList.toggle('navbar-scrolled', scrolled);
+    if (navbar.classList.contains('navbar-hero')) {
+      navbar.classList.toggle('navbar-hero-scrolled', scrolled);
+    }
+  }, { passive: true });
+
+  links.querySelectorAll('.nav-link').forEach(function(a) {
+    if (a.getAttribute('href') === path) a.classList.add('nav-active');
+  });
+})();
+</script>

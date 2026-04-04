@@ -1,0 +1,169 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<main class="page-main">
+  <div class="container">
+    <div class="page-header">
+      <h1><i class="fa-solid fa-clipboard-list"></i> My Reports</h1>
+      <p>Enter your Belgium Campus email to view all your submitted incident reports.</p>
+    </div>
+
+    <!-- Email Lookup -->
+    <div class="lookup-shell">
+      <div class="lookup-row">
+        <input type="email" id="lookupEmail" placeholder="yourname@belgiumcampus.ac.za" class="lookup-input">
+        <button onclick="loadReports()" class="btn btn-navy"><i class="fa-solid fa-magnifying-glass"></i> Find Reports</button>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-bar" id="filtersBar" style="display:none;">
+      <select id="filterStatus" onchange="applyFilters()">
+        <option value="">All Statuses</option>
+        <option value="Pending">Pending</option>
+        <option value="Reviewed">Reviewed</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Resolved">Resolved</option>
+      </select>
+      <select id="filterAnimal" onchange="applyFilters()">
+        <option value="">All Animals</option>
+        <option value="Snake">Snake</option>
+        <option value="Bees/Wasps">Bees/Wasps</option>
+        <option value="Ants">Ants</option>
+        <option value="Lizard">Lizard</option>
+        <option value="Cockroaches">Cockroaches</option>
+        <option value="Stray Dog">Stray Dog</option>
+        <option value="Stray Cat">Stray Cat</option>
+        <option value="Spider">Spider</option>
+        <option value="Rat/Mouse">Rat/Mouse</option>
+        <option value="Other">Other</option>
+      </select>
+      <select id="filterSeverity" onchange="applyFilters()">
+        <option value="">All Severities</option>
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+        <option value="Critical">Critical</option>
+      </select>
+    </div>
+
+    <!-- Results -->
+    <div id="reportsContainer"></div>
+  </div>
+</main>
+
+<script>
+var TWEMOJI_BASE = 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/';
+var ANIMAL_ICONS = {
+  'Snake':      TWEMOJI_BASE + '1f40d.png',
+  'Bees/Wasps': TWEMOJI_BASE + '1f41d.png',
+  'Ants':       TWEMOJI_BASE + '1f41c.png',
+  'Lizard':     TWEMOJI_BASE + '1f98e.png',
+  'Cockroaches':TWEMOJI_BASE + '1fab3.png',
+  'Stray Dog':  TWEMOJI_BASE + '1f415.png',
+  'Stray Cat':  TWEMOJI_BASE + '1f408.png',
+  'Spider':     TWEMOJI_BASE + '1f577.png',
+  'Rat/Mouse':  TWEMOJI_BASE + '1f400.png',
+  'Other':      TWEMOJI_BASE + '2753.png'
+};
+function getAnimalIcon(type) { return ANIMAL_ICONS[type] || ANIMAL_ICONS['Other']; }
+let allReports = [];
+
+async function loadReports() {
+  const email = document.getElementById('lookupEmail').value.trim();
+  if (!email) return showToast('Please enter your email', 'error');
+  if (!email.endsWith('@belgiumcampus.ac.za')) return showToast('Must be a @belgiumcampus.ac.za email', 'error');
+
+  const container = document.getElementById('reportsContainer');
+  container.innerHTML = '<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> Loading reports...</div>';
+
+  try {
+    const res = await fetch(`/incidents/my-reports?email=${encodeURIComponent(email)}`);
+    const data = await res.json();
+    if (!data.success) throw new Error(data.error);
+    allReports = data.incidents;
+    document.getElementById('filtersBar').style.display = allReports.length > 0 ? 'flex' : 'none';
+    renderReports(allReports);
+  } catch (err) {
+    container.innerHTML = `<div class="error-state"><i class="fa-solid fa-circle-xmark"></i> ${err.message}</div>`;
+  }
+}
+
+function applyFilters() {
+  const status = document.getElementById('filterStatus').value;
+  const animal = document.getElementById('filterAnimal').value;
+  const severity = document.getElementById('filterSeverity').value;
+  let filtered = allReports;
+  if (status) filtered = filtered.filter(r => r.status === status);
+  if (animal) filtered = filtered.filter(r => r.animalType === animal);
+  if (severity) filtered = filtered.filter(r => r.severity === severity);
+  renderReports(filtered);
+}
+
+function renderReports(reports) {
+  const container = document.getElementById('reportsContainer');
+  if (reports.length === 0) {
+    container.innerHTML = `<div class="empty-state"><i class="fa-solid fa-magnifying-glass empty-fa-icon"></i><h3>No reports found</h3><p>No incidents match your search criteria.</p><a href="/report" class="btn btn-primary">Submit First Report</a></div>`;
+    return;
+  }
+  container.innerHTML = `<div class="reports-count">${reports.length} report${reports.length !== 1 ? 's' : ''} found</div>
+    <div class="reports-grid">
+    ${reports.map(r => `
+      <div class="report-card">
+        <div class="report-card-header">
+          <span class="report-emoji"><img src="${getAnimalIcon(r.animalType)}" alt="${r.animalType}" class="animal-icon-img"></span>
+          <div class="report-title-group">
+            <h3>${r.animalType}</h3>
+            <span class="report-location"><i class="fa-solid fa-location-dot"></i> ${r.location}</span>
+          </div>
+          <div class="report-badges">
+            <span class="severity-badge severity-${r.severity.toLowerCase()}">${r.severity}</span>
+            <span class="status-badge status-${r.status.toLowerCase().replace(/ /g, '-')}">${r.status}</span>
+          </div>
+        </div>
+        <div class="report-card-body">
+          <p class="report-desc">${r.description.substring(0, 120)}${r.description.length > 120 ? '...' : ''}</p>
+          <div class="report-meta">
+            <span><i class="fa-solid fa-calendar-days"></i> ${new Date(r.createdAt).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+            <span><i class="fa-solid fa-id-card"></i> ${r._id.toString().slice(-8).toUpperCase()}</span>
+          </div>
+        </div>
+        <div class="report-card-footer">
+          <button class="btn btn-sm btn-outline" onclick="toggleDetails(this, '${r._id}')">View Details &#8595;</button>
+          ${r.photoUrl ? `<a href="${r.photoUrl}" target="_blank" class="btn btn-sm btn-secondary"><i class="fa-solid fa-camera"></i> View Photo</a>` : ''}
+        </div>
+        <div class="report-details" id="details-${r._id}" style="display:none;">
+          <div class="detail-section">
+            <strong>Full Description:</strong>
+            <p>${r.description.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+          </div>
+          <div class="detail-section">
+            <strong>Admin Notes:</strong>
+            <p>${(r.adminNotes || 'No admin notes yet.').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+          </div>
+        </div>
+      </div>
+    `).join('')}
+    </div>`;
+}
+
+function toggleDetails(btn, id) {
+  const details = document.getElementById('details-' + id);
+  const isVisible = details.style.display !== 'none';
+  details.style.display = isVisible ? 'none' : 'block';
+  btn.textContent = isVisible ? 'View Details \u2193' : 'Hide Details \u2191';
+}
+
+function showToast(msg, type) {
+  const t = document.createElement('div');
+  t.className = `toast toast-${type}`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.classList.add('toast-show'), 10);
+  setTimeout(() => { t.classList.remove('toast-show'); setTimeout(() => t.remove(), 300); }, 3000);
+}
+
+document.getElementById('lookupEmail').addEventListener('keypress', e => { if (e.key === 'Enter') loadReports(); });
+</script>
+
+<%- include('partials/footer') %>
