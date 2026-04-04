@@ -1,0 +1,247 @@
+<% const adminPage = true; %>
+<%- include('partials/header', { adminPage: true }) %>
+<%- include('partials/navbar') %>
+
+<main class="page-main">
+  <div class="container">
+    <div class="admin-header">
+      <h1><i class="fa-solid fa-shield-halved"></i> Admin Dashboard</h1>
+      <div class="admin-header-user">
+        <span class="admin-user-badge">
+          <i class="fa-solid fa-user-shield"></i>
+          <%= sessionUser ? sessionUser.name : '' %>
+        </span>
+        <div class="admin-actions">
+          <button onclick="exportCSV()" class="btn btn-secondary"><i class="fa-solid fa-file-arrow-down"></i> Export CSV</button>
+          <button onclick="bulkResolveSelected()" class="btn btn-outline"><i class="fa-solid fa-circle-check"></i> Bulk Resolve</button>
+          <form action="/auth/logout" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="admin-stats" id="adminStats">
+      <div class="admin-stat-card">
+        <span class="admin-stat-num" id="statTotal">&mdash;</span>
+        <span class="admin-stat-label">Total Reports</span>
+      </div>
+      <div class="admin-stat-card stat-pending">
+        <span class="admin-stat-num" id="statPending">&mdash;</span>
+        <span class="admin-stat-label">Pending</span>
+      </div>
+      <div class="admin-stat-card stat-progress">
+        <span class="admin-stat-num" id="statProgress">&mdash;</span>
+        <span class="admin-stat-label">In Progress</span>
+      </div>
+      <div class="admin-stat-card stat-resolved">
+        <span class="admin-stat-num" id="statResolved">&mdash;</span>
+        <span class="admin-stat-label">Resolved</span>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="admin-filters">
+      <select id="adminFilterStatus" onchange="loadIncidents()">
+        <option value="">All Statuses</option>
+        <option value="Pending">Pending</option>
+        <option value="Reviewed">Reviewed</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Resolved">Resolved</option>
+      </select>
+      <select id="adminFilterAnimal" onchange="loadIncidents()">
+        <option value="">All Animals</option>
+        <option value="Snake">Snake</option>
+        <option value="Bees/Wasps">Bees/Wasps</option>
+        <option value="Ants">Ants</option>
+        <option value="Lizard">Lizard</option>
+        <option value="Cockroaches">Cockroaches</option>
+        <option value="Stray Dog">Stray Dog</option>
+        <option value="Stray Cat">Stray Cat</option>
+        <option value="Spider">Spider</option>
+        <option value="Rat/Mouse">Rat/Mouse</option>
+      </select>
+      <select id="adminFilterSeverity" onchange="loadIncidents()">
+        <option value="">All Severities</option>
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+        <option value="Critical">Critical</option>
+      </select>
+      <select id="adminFilterLocation" onchange="loadIncidents()">
+        <option value="">All Locations</option>
+        <option value="Main Building">Main Building</option>
+        <option value="Library">Library</option>
+        <option value="Cafeteria">Cafeteria</option>
+        <option value="Parking Lot">Parking Lot</option>
+        <option value="Sports Fields">Sports Fields</option>
+        <option value="Residence">Residence</option>
+        <option value="IT Labs">IT Labs</option>
+        <option value="Admin Block">Admin Block</option>
+        <option value="Garden Area">Garden Area</option>
+      </select>
+      <select id="adminSort" onchange="loadIncidents()">
+        <option value="createdAt">Sort: Newest First</option>
+        <option value="severity">Sort: Severity</option>
+        <option value="status">Sort: Status</option>
+      </select>
+    </div>
+
+    <!-- Table -->
+    <div class="admin-table-wrapper">
+      <table class="admin-table" id="incidentsTable">
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)"></th>
+            <th>ID</th>
+            <th>Animal</th>
+            <th>Location</th>
+            <th>Severity</th>
+            <th>Reporter</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="incidentsBody">
+          <tr><td colspan="9" class="table-loading">Loading incidents...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<script>
+var TWEMOJI_BASE = 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/';
+var ANIMAL_ICONS = {
+  'Snake':      TWEMOJI_BASE + '1f40d.png',
+  'Bees/Wasps': TWEMOJI_BASE + '1f41d.png',
+  'Ants':       TWEMOJI_BASE + '1f41c.png',
+  'Lizard':     TWEMOJI_BASE + '1f98e.png',
+  'Cockroaches':TWEMOJI_BASE + '1fab3.png',
+  'Stray Dog':  TWEMOJI_BASE + '1f415.png',
+  'Stray Cat':  TWEMOJI_BASE + '1f408.png',
+  'Spider':     TWEMOJI_BASE + '1f577.png',
+  'Rat/Mouse':  TWEMOJI_BASE + '1f400.png',
+  'Other':      TWEMOJI_BASE + '2753.png'
+};
+function getAnimalIcon(type) { return ANIMAL_ICONS[type] || ANIMAL_ICONS['Other']; }
+
+async function loadIncidents() {
+  const status = document.getElementById('adminFilterStatus').value;
+  const animalType = document.getElementById('adminFilterAnimal').value;
+  const severity = document.getElementById('adminFilterSeverity').value;
+  const location = document.getElementById('adminFilterLocation').value;
+  const sort = document.getElementById('adminSort').value;
+
+  const params = new URLSearchParams();
+  if (status) params.set('status', status);
+  if (animalType) params.set('animalType', animalType);
+  if (severity) params.set('severity', severity);
+  if (location) params.set('location', location);
+  if (sort) params.set('sort', sort);
+
+  try {
+    const res = await fetch(`/admin/incidents?${params}`);
+    if (res.redirected || res.status === 401 || res.status === 403) {
+      window.location.href = '/login?next=/admin';
+      return;
+    }
+    const data = await res.json();
+    if (!data.success) return;
+    updateStats(data.stats);
+    renderIncidents(data.incidents);
+  } catch (err) { console.error(err); }
+}
+
+function updateStats(stats) {
+  document.getElementById('statTotal').textContent = stats.total;
+  document.getElementById('statPending').textContent = stats.pending;
+  document.getElementById('statProgress').textContent = stats.inProgress;
+  document.getElementById('statResolved').textContent = stats.resolved;
+}
+
+function renderIncidents(incidents) {
+  const tbody = document.getElementById('incidentsBody');
+  if (!incidents.length) {
+    tbody.innerHTML = '<tr><td colspan="9" class="table-empty">No incidents found</td></tr>';
+    return;
+  }
+  tbody.innerHTML = incidents.map(i => `
+    <tr>
+      <td><input type="checkbox" class="incident-check" value="${i._id}"></td>
+      <td class="id-cell" title="${i._id}">${i._id.toString().slice(-8).toUpperCase()}</td>
+      <td><img src="${getAnimalIcon(i.animalType)}" class="animal-icon-sm" alt="${i.animalType}"> ${i.animalType}</td>
+      <td>${i.location}</td>
+      <td><span class="severity-badge severity-${i.severity.toLowerCase()}">${i.severity}</span></td>
+      <td><div>${i.reporterName}</div><small>${i.reporterEmail}</small></td>
+      <td>${new Date(i.createdAt).toLocaleDateString('en-ZA')}</td>
+      <td>
+        <select class="status-select" onchange="updateStatus('${i._id}', this.value)">
+          <option value="Pending" ${i.status === 'Pending' ? 'selected' : ''}>Pending</option>
+          <option value="Reviewed" ${i.status === 'Reviewed' ? 'selected' : ''}>Reviewed</option>
+          <option value="In Progress" ${i.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+          <option value="Resolved" ${i.status === 'Resolved' ? 'selected' : ''}>Resolved</option>
+        </select>
+      </td>
+      <td>
+        <textarea class="notes-input" placeholder="Add notes..." onblur="saveNotes('${i._id}', this.value)">${i.adminNotes || ''}</textarea>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function updateStatus(id, status) {
+  await fetch(`/admin/incidents/${id}/status`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status })
+  });
+  showToast('Status updated', 'success');
+  loadIncidents();
+}
+
+async function saveNotes(id, notes) {
+  await fetch(`/admin/incidents/${id}/notes`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ adminNotes: notes })
+  });
+}
+
+async function bulkResolveSelected() {
+  const checked = [...document.querySelectorAll('.incident-check:checked')].map(c => c.value);
+  if (!checked.length) return showToast('No incidents selected', 'error');
+  const res = await fetch('/admin/incidents/bulk-resolve', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ids: checked })
+  });
+  const data = await res.json();
+  showToast(data.message || 'Bulk resolved', 'success');
+  loadIncidents();
+}
+
+function toggleSelectAll(cb) {
+  document.querySelectorAll('.incident-check').forEach(c => c.checked = cb.checked);
+}
+
+function exportCSV() {
+  window.open('/admin/export/csv', '_blank');
+}
+
+function showToast(msg, type) {
+  const t = document.createElement('div');
+  t.className = `toast toast-${type}`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.classList.add('toast-show'), 10);
+  setTimeout(() => { t.classList.remove('toast-show'); setTimeout(() => t.remove(), 300); }, 3000);
+}
+
+// Load on page ready
+document.addEventListener('DOMContentLoaded', loadIncidents);
+</script>
+
+<%- include('partials/footer') %>

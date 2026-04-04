@@ -1,0 +1,176 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<main class="page-main">
+  <div class="container">
+    <div class="page-header">
+      <h1><i class="fa-solid fa-triangle-exclamation"></i> Report a Sighting</h1>
+      <p>Help keep Belgium Campus safe. Fill in the details below and campus security will be notified immediately.</p>
+    </div>
+
+    <div class="form-shell">
+      <form id="reportForm" class="form-card" novalidate>
+        <!-- Reporter Info -->
+        <div class="form-section">
+          <h3 class="form-section-title"><i class="fa-solid fa-pen-to-square"></i> Your Information</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="reporterName">Full Name <span class="required">*</span></label>
+              <input type="text" id="reporterName" name="reporterName" placeholder="e.g. John Doe" required>
+              <span class="field-error" id="nameError"></span>
+            </div>
+            <div class="form-group">
+              <label for="reporterEmail">Campus Email <span class="required">*</span></label>
+              <input type="email" id="reporterEmail" name="reporterEmail" placeholder="yourname@belgiumcampus.ac.za" required>
+              <span class="field-hint">Must be a @belgiumcampus.ac.za address</span>
+              <span class="field-error" id="emailError"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Animal & Location -->
+        <div class="form-section">
+          <h3 class="form-section-title"><i class="fa-solid fa-paw"></i> Sighting Details</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="animalType">Animal Type <span class="required">*</span></label>
+              <select id="animalType" name="animalType" required>
+                <option value="">— Select Animal —</option>
+                <option value="Snake">Snake</option>
+                <option value="Bees/Wasps">Bees/Wasps</option>
+                <option value="Ants">Ants</option>
+                <option value="Lizard">Lizard</option>
+                <option value="Cockroaches">Cockroaches</option>
+                <option value="Stray Dog">Stray Dog</option>
+                <option value="Stray Cat">Stray Cat</option>
+                <option value="Spider">Spider</option>
+                <option value="Rat/Mouse">Rat/Mouse</option>
+                <option value="Other">Other</option>
+              </select>
+              <span class="field-error" id="animalError"></span>
+            </div>
+            <div class="form-group">
+              <label for="location">Campus Location <span class="required">*</span></label>
+              <select id="location" name="location" required>
+                <option value="">— Select Location —</option>
+                <option value="Main Building">Main Building</option>
+                <option value="Library">Library</option>
+                <option value="Cafeteria">Cafeteria</option>
+                <option value="Parking Lot">Parking Lot</option>
+                <option value="Sports Fields">Sports Fields</option>
+                <option value="Residence">Residence</option>
+                <option value="IT Labs">IT Labs</option>
+                <option value="Admin Block">Admin Block</option>
+                <option value="Garden Area">Garden Area</option>
+                <option value="Other">Other</option>
+              </select>
+              <span class="field-error" id="locationError"></span>
+            </div>
+          </div>
+
+          <!-- Other Animal Description -->
+          <div class="form-group" id="otherAnimalGroup" style="display:none;">
+            <label for="otherAnimalDescription">Describe the Animal <span class="required">*</span></label>
+            <input type="text" id="otherAnimalDescription" name="otherAnimalDescription" placeholder="e.g. Large green bird, approximately 30cm">
+          </div>
+        </div>
+
+        <!-- Severity -->
+        <div class="form-section">
+          <h3 class="form-section-title"><i class="fa-solid fa-circle-exclamation"></i> Severity Level <span class="required">*</span></h3>
+          <div class="severity-grid">
+            <label class="severity-card severity-low">
+              <input type="radio" name="severity" value="Low">
+              <div class="severity-content">
+                <span class="severity-icon"><span class="sev-dot sev-dot-low"></span></span>
+                <strong>Low</strong>
+                <p>No immediate danger</p>
+              </div>
+            </label>
+            <label class="severity-card severity-medium">
+              <input type="radio" name="severity" value="Medium">
+              <div class="severity-content">
+                <span class="severity-icon"><span class="sev-dot sev-dot-medium"></span></span>
+                <strong>Medium</strong>
+                <p>Potential risk</p>
+              </div>
+            </label>
+            <label class="severity-card severity-high">
+              <input type="radio" name="severity" value="High">
+              <div class="severity-content">
+                <span class="severity-icon"><span class="sev-dot sev-dot-high"></span></span>
+                <strong>High</strong>
+                <p>Immediate attention needed</p>
+              </div>
+            </label>
+            <label class="severity-card severity-critical">
+              <input type="radio" name="severity" value="Critical">
+              <div class="severity-content">
+                <span class="severity-icon"><span class="sev-dot sev-dot-critical"></span></span>
+                <strong>Critical</strong>
+                <p>Danger to life/safety</p>
+              </div>
+            </label>
+          </div>
+          <span class="field-error" id="severityError"></span>
+        </div>
+
+        <!-- Description -->
+        <div class="form-section">
+          <h3 class="form-section-title"><i class="fa-solid fa-file-lines"></i> Description</h3>
+          <div class="form-group">
+            <label for="description">Describe the Incident <span class="required">*</span></label>
+            <textarea id="description" name="description" rows="4" maxlength="500" placeholder="Describe what you saw, where exactly, how many animals, any immediate danger..."></textarea>
+            <div class="char-counter"><span id="charCount">0</span>/500 characters</div>
+            <span class="field-error" id="descError"></span>
+          </div>
+        </div>
+
+        <!-- Photo Upload -->
+        <div class="form-section">
+          <h3 class="form-section-title"><i class="fa-solid fa-camera"></i> Photo (Optional)</h3>
+          <div class="form-group">
+            <label for="photo" class="file-upload-label">
+              <div class="file-upload-area" id="fileUploadArea">
+                <span class="file-upload-icon"><i class="fa-solid fa-camera"></i></span>
+                <span class="file-upload-text">Click to upload or drag &amp; drop</span>
+                <span class="file-upload-hint">PNG, JPG, GIF up to 5MB</span>
+              </div>
+              <input type="file" id="photo" name="photo" accept="image/*" class="file-input">
+            </label>
+            <div id="photoPreview" class="photo-preview" style="display:none;">
+              <img id="previewImg" src="" alt="Preview">
+              <button type="button" id="removePhoto" class="btn-remove-photo">&times; Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-submit-wrap">
+          <button type="submit" class="btn btn-amber btn-full btn-lg" id="submitBtn">
+            <span id="submitText"><i class="fa-solid fa-triangle-exclamation"></i> Submit Report</span>
+            <span id="submitSpinner" style="display:none;"><i class="fa-solid fa-spinner fa-spin"></i> Submitting...</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Success Card -->
+      <div class="success-card" id="successCard" style="display:none;">
+        <i class="fa-solid fa-circle-check success-check-icon"></i>
+        <h2>Report Submitted!</h2>
+        <p>Campus security has been notified.</p>
+        <div class="incident-id-box">
+          <span class="incident-id-label">Your Incident ID:</span>
+          <span class="incident-id" id="incidentId"></span>
+        </div>
+        <p class="success-note">Save your campus email to track this report in <a href="/my-reports">My Reports</a>.</p>
+        <div class="success-actions">
+          <a href="/my-reports" class="btn btn-secondary"><i class="fa-solid fa-clipboard-list"></i> Track Report</a>
+          <button onclick="resetForm()" class="btn btn-outline">Submit Another</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="/js/reports.js"></script>
+<%- include('partials/footer') %>
