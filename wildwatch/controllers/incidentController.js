@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
 const Incident = require('../models/Incident');
 const cloudinary = require('cloudinary').v2;
+const { connectDB } = require('../lib/db');
 
 // Configure cloudinary if env vars present
 if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_CLOUD_NAME !== 'optional') {
@@ -11,21 +11,9 @@ if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_CLOUD_NAME !== '
   });
 }
 
-function isDbConnected() {
-  return mongoose.connection.readyState === 1;
-}
-
 exports.homePage = async (req, res) => {
-  if (!isDbConnected()) {
-    return res.render('index', {
-      title: 'BC WildWatch - Campus Animal Safety',
-      feed: [],
-      stats: { todayCount: 0, resolvedWeek: 0, topAnimal: 'N/A' },
-      dbOffline: true
-    });
-  }
-
   try {
+    await connectDB();
     const feed = await Incident.find()
       .sort({ createdAt: -1 })
       .limit(5)
@@ -55,20 +43,27 @@ exports.homePage = async (req, res) => {
     });
   } catch (err) {
     console.error(err);
+    // If DB failed to connect, show offline state instead of 500
+    if (err.name === 'MongooseError' || err.name === 'MongoParseError' || err.message?.includes('connect')) {
+      return res.render('index', {
+        title: 'BC WildWatch - Campus Animal Safety',
+        feed: [],
+        stats: { todayCount: 0, resolvedWeek: 0, topAnimal: 'N/A' },
+        dbOffline: true
+      });
+    }
     res.status(500).render('500', { title: 'Error', error: err.message });
   }
 };
 
 exports.reportPage = (req, res) => {
-  res.render('report', { title: 'Report a Sighting - BC WildWatch' });
+  const campusDomain = (process.env.CAMPUS_DOMAIN || 'belgiumcampus.ac.za').trim();
+  res.render('report', { title: 'Report a Sighting - BC WildWatch', reporterDomain: 'student.' + campusDomain });
 };
 
 exports.submitIncident = async (req, res) => {
-  if (!isDbConnected()) {
-    return res.status(503).json({ success: false, error: 'Database not connected. Please set MONGODB_URI in .env and restart.' });
-  }
-
   try {
+    await connectDB();
     const { reporterName, reporterEmail, animalType, otherAnimalDescription, location, description, severity } = req.body;
     let photoUrl = '';
 
@@ -101,15 +96,13 @@ exports.submitIncident = async (req, res) => {
 };
 
 exports.myReportsPage = (req, res) => {
-  res.render('my-reports', { title: 'My Reports - BC WildWatch' });
+  const base = (process.env.CAMPUS_DOMAIN || 'belgiumcampus.ac.za').trim();
+  res.render('my-reports', { title: 'My Reports - BC WildWatch', reporterDomain: 'student.' + base });
 };
 
 exports.getMyReports = async (req, res) => {
-  if (!isDbConnected()) {
-    return res.status(503).json({ success: false, error: 'Database not connected.' });
-  }
-
   try {
+    await connectDB();
     const { email } = req.query;
     if (!email) return res.status(400).json({ success: false, error: 'Email is required' });
 
@@ -123,11 +116,8 @@ exports.getMyReports = async (req, res) => {
 };
 
 exports.getFeed = async (req, res) => {
-  if (!isDbConnected()) {
-    return res.json({ success: true, feed: [] });
-  }
-
   try {
+    await connectDB();
     const feed = await Incident.find()
       .sort({ createdAt: -1 })
       .limit(5)
@@ -139,11 +129,8 @@ exports.getFeed = async (req, res) => {
 };
 
 exports.getStats = async (req, res) => {
-  if (!isDbConnected()) {
-    return res.json({ success: true, today: 0, resolvedThisWeek: 0, topAnimal: 'N/A' });
-  }
-
   try {
+    await connectDB();
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);

@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 
 const { sessionLocals } = require('./middleware/auth');
+const { connectDB } = require('./lib/db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -47,10 +48,8 @@ app.set('views', path.join(__dirname, 'views'));
 // Attach session user to all views
 app.use(sessionLocals);
 
-// MongoDB connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/wildwatch')
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
+// MongoDB connection (lazy, awaited per-request in controllers)
+connectDB().catch(err => console.error('Initial DB connect error:', err));
 
 // Home redirect
 app.get('/', (req, res) => {
@@ -63,6 +62,7 @@ app.use('/auth', require('./routes/auth'));
 app.use('/', require('./routes/incidents'));
 app.use('/admin', require('./routes/admin'));
 app.use('/chatbot', require('./routes/chatbot'));
+app.use('/feed',    require('./routes/feed'));
 app.use('/qr', require('./routes/qr'));
 
 // Health check
@@ -81,8 +81,10 @@ app.use((err, req, res, next) => {
   res.status(500).render('500', { title: '500 - Server Error', error: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong' });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 BC WildWatch running on http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🚀 BC WildWatch running on http://localhost:${PORT}`);
+  });
+}
 
 module.exports = app;

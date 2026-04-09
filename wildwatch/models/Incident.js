@@ -13,9 +13,10 @@ const incidentSchema = new mongoose.Schema({
     trim: true,
     validate: {
       validator: function(v) {
-        return v.endsWith('@belgiumcampus.ac.za');
+        const domain = (process.env.CAMPUS_DOMAIN || 'belgiumcampus.ac.za').trim();
+        return v.endsWith('@student.' + domain);
       },
-      message: 'Email must be a Belgium Campus address (@belgiumcampus.ac.za)'
+      message: 'Email must be a student campus address'
     }
   },
   animalType: {

@@ -26,9 +26,11 @@ try {
   upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
 }
 
+const { requireAuth } = require('../middleware/auth');
+
 router.get('/home', controller.homePage);
-router.get('/report', controller.reportPage);
-router.get('/my-reports', controller.myReportsPage);
+router.get('/report', requireAuth, controller.reportPage);
+router.get('/my-reports', requireAuth, controller.myReportsPage);
 
 router.post('/incidents/submit', upload.single('photo'), controller.submitIncident);
 router.get('/incidents/my-reports', controller.getMyReports);

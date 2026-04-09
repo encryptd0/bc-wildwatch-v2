@@ -1,0 +1,124 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<div class="community-feed-page page-content">
+
+  <!-- ── New posts indicator ── -->
+  <div class="feed-new-indicator" id="feedNewIndicator" style="display:none;">
+    <i class="fa-solid fa-arrow-up"></i>
+    <span id="indicatorCount">0</span> new post<span id="indicatorPlural">s</span> — click to load
+  </div>
+
+  <div class="community-feed-layout">
+
+    <!-- ── Left sidebar: compose + user info ── -->
+    <aside class="community-sidebar">
+
+      <!-- User chip -->
+      <div class="community-user-chip">
+        <span class="post-avatar sidebar-avatar"><%= sessionUser.name.trim().split(/\s+/).map(function(w){return w[0]}).slice(0,2).join('').toUpperCase() %></span>
+        <div class="community-user-info">
+          <span class="community-user-name"><%= sessionUser.name.split(' ')[0] %></span>
+          <span class="community-user-role"><%= sessionUser.role === 'admin' ? 'Admin' : 'Student' %></span>
+        </div>
+      </div>
+
+      <!-- Compose card -->
+      <div class="compose-card">
+        <div class="compose-card-header">
+          <span class="feed-live-pill"><span class="feed-live-dot"></span>Community Feed</span>
+        </div>
+
+        <form id="composeForm" novalidate>
+          <!-- Post type selector -->
+          <div class="post-type-selector">
+            <button type="button" class="post-type-btn type-post is-active" data-type="post" title="Post">
+              <i class="fa-solid fa-comment"></i>
+              <span>Post</span>
+            </button>
+            <button type="button" class="post-type-btn type-question" data-type="question" title="Question">
+              <i class="fa-solid fa-circle-question"></i>
+              <span>Question</span>
+            </button>
+            <button type="button" class="post-type-btn type-alert" data-type="alert" title="Alert">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <span>Alert</span>
+            </button>
+            <button type="button" class="post-type-btn type-emergency" data-type="emergency" title="Emergency">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              <span>Emergency</span>
+            </button>
+          </div>
+
+          <div class="compose-field">
+            <textarea
+              id="composeText"
+              placeholder="Share a sighting, ask a question, or send an alert…"
+              maxlength="500"
+              rows="4"
+            ></textarea>
+            <span class="char-counter" id="charCounter">0 / 500</span>
+          </div>
+
+          <button type="submit" class="btn btn-amber btn-full compose-btn" id="postBtn" disabled>
+            <span id="postBtnText"><i class="fa-solid fa-paper-plane"></i> Post</span>
+            <span id="postBtnSpinner" style="display:none;"><i class="fa-solid fa-spinner fa-spin"></i> Posting…</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Legend -->
+      <div class="type-legend">
+        <div class="legend-item type-post"><i class="fa-solid fa-comment"></i> General post</div>
+        <div class="legend-item type-question"><i class="fa-solid fa-circle-question"></i> Question</div>
+        <div class="legend-item type-alert"><i class="fa-solid fa-triangle-exclamation"></i> Sighting alert</div>
+        <div class="legend-item type-emergency"><i class="fa-solid fa-circle-exclamation"></i> Emergency — needs help</div>
+      </div>
+
+    </aside>
+
+    <!-- ── Main feed ── -->
+    <main class="community-feed-main">
+
+      <div class="community-feed-header">
+        <h1 class="community-feed-title">Community Feed</h1>
+        <p class="community-feed-sub">Stay informed — share sightings, ask questions, send alerts.</p>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="filter-bar" role="group" aria-label="Filter posts">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="question"><i class="fa-solid fa-circle-question"></i> Questions</button>
+        <button class="filter-btn" data-filter="alert"><i class="fa-solid fa-triangle-exclamation"></i> Alerts</button>
+        <button class="filter-btn" data-filter="emergency"><i class="fa-solid fa-circle-exclamation"></i> Emergencies</button>
+      </div>
+
+      <!-- Posts list -->
+      <div id="feedList"></div>
+
+      <!-- Empty state -->
+      <div class="feed-empty community-empty" id="feedEmpty" style="display:none;">
+        <i class="fa-solid fa-dove fa-2x"></i>
+        <p>No posts yet. Be the first to share!</p>
+      </div>
+
+      <!-- Load more -->
+      <div class="load-more-wrap">
+        <button class="btn-load-more" id="loadMoreBtn">
+          <i class="fa-solid fa-chevron-down"></i> Load older posts
+        </button>
+      </div>
+
+    </main>
+  </div>
+
+</div>
+
+<script>
+  window.__FEED_POSTS__    = <%- JSON.stringify(posts) %>;
+  window.__FEED_HAS_MORE__ = <%- posts.length === 20 ? 'true' : 'false' %>;
+</script>
+<script src="/js/feed.js"></script>
+
+</body>
+</html>

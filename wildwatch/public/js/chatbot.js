@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
   const input = document.getElementById('chatInput');
   const messages = document.getElementById('chatMessages');
+  const sendBtn = document.getElementById('sendBtn');
+  const clearChatBtn = document.getElementById('clearChatBtn');
+
+  // Client-side history for stateless serverless backend
+  const chatHistory = [];
 
   function getTime() {
     return new Date().toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit' });
@@ -17,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const bubble = document.createElement('div');
     bubble.className = 'message-bubble';
 
-    // Convert newlines and basic markdown to HTML
     const formatted = text
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
@@ -48,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('typingIndicator').style.display = 'none';
   }
 
-  window.sendMessage = async function() {
+  async function sendMessage() {
     const text = input.value.trim();
     if (!text) return;
 
@@ -56,55 +60,69 @@ document.addEventListener('DOMContentLoaded', function() {
     input.style.height = 'auto';
     addMessage(text, 'user');
     showTyping();
-
-    document.getElementById('sendBtn').disabled = true;
+    sendBtn.disabled = true;
 
     try {
       const res = await fetch('/chatbot/message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text })
+        body: JSON.stringify({ message: text, history: chatHistory })
       });
       const data = await res.json();
       hideTyping();
-      document.getElementById('sendBtn').disabled = false;
+      sendBtn.disabled = false;
 
       if (data.success) {
+        chatHistory.push({ role: 'user', parts: [{ text }] });
+        chatHistory.push({ role: 'model', parts: [{ text: data.reply }] });
+        if (chatHistory.length > 20) chatHistory.splice(0, 2);
         addMessage(data.reply, 'bot');
       } else {
         addMessage('Sorry, I encountered an error. Please try again.', 'bot');
       }
     } catch (err) {
       hideTyping();
-      document.getElementById('sendBtn').disabled = false;
+      sendBtn.disabled = false;
       addMessage('Connection error. Please check your internet connection.', 'bot');
     }
-  };
+  }
 
-  window.sendSuggestion = function(btn) {
-    input.value = btn.textContent;
-    sendMessage();
-  };
+  // Send button
+  sendBtn.addEventListener('click', sendMessage);
 
-  window.clearChat = function() {
-    messages.innerHTML = `<div class="chat-message bot-message">
-      <div class="message-avatar"><i class="fa-solid fa-robot"></i></div>
-      <div class="message-bubble">
-        <p>Chat cleared! How can I help you with campus animal safety?</p>
-        <span class="message-time">${getTime()}</span>
-      </div>
-    </div>`;
-  };
-
-  window.handleKeyDown = function(e) {
+  // Enter key (Shift+Enter for newline)
+  input.addEventListener('keydown', function(e) {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
     }
-  };
+  });
 
-  window.autoResize = function(el) {
-    el.style.height = 'auto';
-    el.style.height = Math.min(el.scrollHeight, 150) + 'px';
-  };
+  // Auto-resize textarea
+  input.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+  });
+
+  // Suggestion buttons
+  document.querySelectorAll('.suggestion-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      input.value = btn.textContent;
+      sendMessage();
+    });
+  });
+
+  // Clear chat
+  if (clearChatBtn) {
+    clearChatBtn.addEventListener('click', function() {
+      chatHistory.length = 0;
+      messages.innerHTML = `<div class="chat-message bot-message">
+        <div class="message-avatar"><i class="fa-solid fa-robot"></i></div>
+        <div class="message-bubble">
+          <p>Chat cleared! How can I help you with campus animal safety?</p>
+          <span class="message-time">${getTime()}</span>
+        </div>
+      </div>`;
+    });
+  }
 });

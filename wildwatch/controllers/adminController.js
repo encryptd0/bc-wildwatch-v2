@@ -1,20 +1,14 @@
-const mongoose = require('mongoose');
 const Incident = require('../models/Incident');
-
-function isDbConnected() {
-  return mongoose.connection.readyState === 1;
-}
+const { connectDB } = require('../lib/db');
 
 exports.adminPage = (req, res) => {
   res.render('admin', { title: 'Admin Dashboard - BC WildWatch' });
 };
 
 exports.getAllIncidents = async (req, res) => {
-  if (!isDbConnected()) {
-    return res.status(503).json({ success: false, error: 'Database not connected. Set MONGODB_URI in .env and restart.' });
-  }
-
   try {
+    await connectDB();
+
     const filter = {};
     if (req.query.status) filter.status = req.query.status;
     if (req.query.animalType) filter.animalType = req.query.animalType;
@@ -45,6 +39,7 @@ exports.getAllIncidents = async (req, res) => {
 
 exports.updateStatus = async (req, res) => {
   try {
+    await connectDB();
     const { id } = req.params;
     const { status } = req.body;
 
@@ -62,6 +57,7 @@ exports.updateStatus = async (req, res) => {
 
 exports.updateNotes = async (req, res) => {
   try {
+    await connectDB();
     const { id } = req.params;
     const { adminNotes } = req.body;
 
@@ -76,6 +72,7 @@ exports.updateNotes = async (req, res) => {
 
 exports.exportCSV = async (req, res) => {
   try {
+    await connectDB();
     const incidents = await Incident.find().sort({ createdAt: -1 });
 
     const headers = ['ID', 'Animal Type', 'Location', 'Severity', 'Status', 'Reporter Name', 'Reporter Email', 'Description', 'Admin Notes', 'Created At', 'Resolved At'];
@@ -105,6 +102,7 @@ exports.exportCSV = async (req, res) => {
 
 exports.bulkResolve = async (req, res) => {
   try {
+    await connectDB();
     const { ids } = req.body;
     if (!ids || !Array.isArray(ids)) return res.status(400).json({ success: false, error: 'IDs array required' });
 
