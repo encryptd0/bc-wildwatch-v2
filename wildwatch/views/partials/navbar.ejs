@@ -13,18 +13,25 @@
     <ul class="nav-links" id="navLinks">
       <li><a href="/home" class="nav-link">Home</a></li>
       <li><a href="/my-reports" class="nav-link">My Reports</a></li>
+      <li><a href="/feed" class="nav-link nav-link-feed">Community Feed</a></li>
       <li><a href="/chatbot" class="nav-link">AI Chatbot</a></li>
       <li><a href="/qr" class="nav-link">QR Code</a></li>
       <% if (locals.sessionUser) { %>
-        <li><a href="/admin" class="nav-link nav-link-admin">Admin</a></li>
+        <% if (sessionUser.role === 'admin') { %>
+          <li><a href="/admin" class="nav-link nav-link-admin">Admin</a></li>
+        <% } %>
         <li class="nav-session-item">
-          <span class="nav-session-name"><i class="fa-solid fa-user-shield"></i> <%= sessionUser.name.split(' ')[0] %></span>
+          <span class="nav-session-name">
+            <i class="fa-solid <%= sessionUser.role === 'admin' ? 'fa-user-shield' : 'fa-user-graduate' %>"></i>
+            <%= sessionUser.name.split(' ')[0] %>
+          </span>
           <form action="/auth/logout" method="POST" class="nav-logout-form">
             <button type="submit" class="nav-logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
           </form>
         </li>
       <% } else { %>
         <li><a href="/admin" class="nav-link nav-link-admin">Admin</a></li>
+        <li><a href="/login/student" class="nav-link nav-link-signin"><i class="fa-solid fa-right-to-bracket"></i> Sign In</a></li>
       <% } %>
       <li><a href="/report" class="nav-link nav-link-report"><i class="fa-solid fa-triangle-exclamation"></i> Report</a></li>
     </ul>

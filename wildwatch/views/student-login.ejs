@@ -1,0 +1,132 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<div class="login-page student-login-page">
+
+  <!-- Left panel — welcoming student branding -->
+  <div class="login-panel-left student-panel-left">
+    <a href="/home" class="login-brand">
+      <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f981.png" alt="BC WildWatch" class="login-brand-img">
+      <div>
+        <span class="login-brand-name">BC WildWatch<sup>™</sup></span>
+        <span class="login-brand-sub">Campus Safety System</span>
+      </div>
+    </a>
+
+    <div class="login-hero-text">
+      <h1>Student Portal</h1>
+      <p>Sign in with your campus email to report animal sightings and track the status of your reports.</p>
+    </div>
+
+    <div class="login-features">
+      <div class="login-feature">
+        <i class="fa-solid fa-paw"></i>
+        <span>Report animal sightings on campus</span>
+      </div>
+      <div class="login-feature">
+        <i class="fa-solid fa-list-check"></i>
+        <span>Track your submitted reports</span>
+      </div>
+      <div class="login-feature">
+        <i class="fa-solid fa-robot"></i>
+        <span>Get instant safety advice from the AI chatbot</span>
+      </div>
+      <div class="login-feature">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>Campus emergencies: Security Ext. 101</span>
+      </div>
+    </div>
+
+    <div class="login-security-note">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>No password needed — just your Belgium Campus email.</span>
+    </div>
+  </div>
+
+  <!-- Right panel — form -->
+  <div class="login-panel-right">
+    <div class="login-card">
+      <div class="login-step-header">
+        <div class="student-login-icon">
+          <i class="fa-solid fa-user-graduate"></i>
+        </div>
+        <h2>Sign In</h2>
+        <p>Enter your details to access the student portal.</p>
+      </div>
+
+      <% if (error) { %>
+      <div class="login-error" style="display:block;"><%= error %></div>
+      <% } %>
+
+      <form id="studentLoginForm" method="POST" action="/login/student" novalidate>
+        <input type="hidden" name="next" value="<%= next %>">
+
+        <div class="login-form-group">
+          <label for="inputName">Full Name</label>
+          <div class="login-input-wrap">
+            <i class="fa-solid fa-user login-input-icon"></i>
+            <input type="text" id="inputName" name="name" placeholder="e.g. Thabo Mokoena" autocomplete="name" required>
+          </div>
+        </div>
+
+        <div class="login-form-group">
+          <label for="inputEmail">Campus Email</label>
+          <div class="login-input-wrap">
+            <i class="fa-solid fa-envelope login-input-icon"></i>
+            <input type="email" id="inputEmail" name="email" placeholder="yourname@<%= domain %>" autocomplete="email" required>
+          </div>
+          <span class="login-hint">Must be a @<%= domain %> address</span>
+        </div>
+
+        <div class="login-error" id="clientError" style="display:none;"></div>
+
+        <button type="submit" class="btn btn-amber btn-full btn-lg login-submit-btn" id="submitBtn">
+          <span id="submitBtnText">Sign In <i class="fa-solid fa-arrow-right"></i></span>
+          <span id="submitBtnSpinner" style="display:none;"><i class="fa-solid fa-spinner fa-spin"></i> Signing in...</span>
+        </button>
+      </form>
+
+      <p class="login-footer-note" style="margin-top:1.5rem;">
+        <i class="fa-solid fa-shield-halved"></i>
+        Admin? <a href="/login" class="login-link">Sign in here</a> with 2FA.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var form     = document.getElementById('studentLoginForm');
+  var errEl    = document.getElementById('clientError');
+  var btnText  = document.getElementById('submitBtnText');
+  var btnSpinner = document.getElementById('submitBtnSpinner');
+  var btn      = document.getElementById('submitBtn');
+
+  function showError(msg) {
+    errEl.textContent = msg;
+    errEl.style.display = msg ? 'block' : 'none';
+  }
+
+  form.addEventListener('submit', function(e) {
+    var name  = document.getElementById('inputName').value.trim();
+    var email = document.getElementById('inputEmail').value.trim().toLowerCase();
+    var domain = '<%= domain %>';
+
+    showError('');
+    if (!name)  { e.preventDefault(); return showError('Please enter your full name.'); }
+    if (!email) { e.preventDefault(); return showError('Please enter your campus email.'); }
+    if (!email.endsWith('@' + domain)) {
+      e.preventDefault();
+      return showError('Please use your @' + domain + ' campus email.');
+    }
+
+    // Show loading state
+    btn.disabled = true;
+    btnText.style.display = 'none';
+    btnSpinner.style.display = 'inline';
+  });
+});
+</script>
+
+</body>
+</html>

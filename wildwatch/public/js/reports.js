@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (!name) { document.getElementById('nameError').textContent = 'Name is required'; valid = false; }
     if (!email) { document.getElementById('emailError').textContent = 'Email is required'; valid = false; }
-    else if (!email.endsWith('@belgiumcampus.ac.za')) { document.getElementById('emailError').textContent = 'Must be a @belgiumcampus.ac.za email'; valid = false; }
+    else if (!email.endsWith('@' + (window.CAMPUS_DOMAIN || 'belgiumcampus.ac.za'))) { document.getElementById('emailError').textContent = 'Must be a @' + (window.CAMPUS_DOMAIN || 'belgiumcampus.ac.za') + ' email'; valid = false; }
     if (!animal) { document.getElementById('animalError').textContent = 'Please select an animal type'; valid = false; }
     if (!location) { document.getElementById('locationError').textContent = 'Please select a location'; valid = false; }
     if (!severity) { document.getElementById('severityError').textContent = 'Please select a severity level'; valid = false; }

@@ -1,11 +1,12 @@
 const crypto  = require('crypto');
 const QRCode  = require('qrcode');
 const AuthUser = require('../models/AuthUser');
-const { setSession, clearSession, getRole } = require('../middleware/auth');
+const { setSession, clearSession, getRole, getSessionUser } = require('../middleware/auth');
+const { connectDB } = require('../lib/db');
 
 // ── Constants ────────────────────────────────────────────────
 const ISSUER           = process.env.TWO_FACTOR_ISSUER  || 'BC WildWatch';
-const CAMPUS_DOMAIN    = process.env.CAMPUS_DOMAIN      || 'belgiumcampus.ac.za';
+const CAMPUS_DOMAIN    = (process.env.CAMPUS_DOMAIN      || 'belgiumcampus.ac.za').trim();
 const CHALLENGE_TTL    = 5 * 60; // 5 minutes
 const TOTP_DIGITS      = 6;
 const TOTP_PERIOD      = 30;
@@ -128,7 +129,8 @@ async function enableAuthUser(email) {
 exports.loginPage = (req, res) => {
   res.render('login', {
     title: 'Sign In - BC WildWatch',
-    next: req.query.next || '/admin'
+    next: req.query.next || '/admin',
+    campusDomain: CAMPUS_DOMAIN
   });
 };
 
@@ -144,10 +146,7 @@ exports.beginLogin = async (req, res) => {
       return res.status(400).json({ error: `Use your @${CAMPUS_DOMAIN} campus email.` });
     }
 
-    const mongoose = require('mongoose');
-    if (mongoose.connection.readyState !== 1) {
-      return res.status(503).json({ error: 'Database not connected. Cannot process login.' });
-    }
+    await connectDB();
 
     const authUser = await getOrCreateAuthUser(norm);
     const setupRequired = !authUser.enabled;
@@ -227,5 +226,40 @@ exports.verifyLogin = async (req, res) => {
 
 exports.logout = (req, res) => {
   clearSession(res);
-  res.redirect('/login');
+  res.redirect('/login/student');
+};
+
+// ── Student login (email-only, no password) ──────────────────
+
+exports.studentLoginPage = (req, res) => {
+  const user = getSessionUser(req);
+  if (user) return res.redirect(req.query.next || '/report');
+  const studentDomain = 'student.' + CAMPUS_DOMAIN;
+  res.render('student-login', {
+    title: 'Student Sign In - BC WildWatch',
+    next: req.query.next || '/report',
+    domain: studentDomain,
+    error: null
+  });
+};
+
+exports.studentLogin = (req, res) => {
+  const { name, email, next } = req.body;
+  const studentDomain = 'student.' + CAMPUS_DOMAIN;
+  const renderError = (msg) => res.render('student-login', {
+    title: 'Student Sign In - BC WildWatch',
+    next: next || '/report',
+    domain: studentDomain,
+    error: msg
+  });
+
+  if (!name || !name.trim()) return renderError('Please enter your full name.');
+  const norm = (email || '').trim().toLowerCase();
+  if (!norm) return renderError('Please enter your campus email.');
+  if (!norm.endsWith('@' + studentDomain.toLowerCase())) {
+    return renderError(`Please use your @${studentDomain} campus email.`);
+  }
+
+  setSession(res, { name: name.trim(), email: norm, role: 'student' });
+  res.redirect(next || '/report');
 };

@@ -1,0 +1,477 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 810" preserveAspectRatio="xMidYMid slice" class="hero-svg-bg" aria-hidden="true">
+<defs>
+<style>
+.svh-c1{animation:svhc1 72s linear infinite}
+.svh-c2{animation:svhc2 95s linear infinite}
+.svh-c3{animation:svhc3 84s linear infinite}
+@keyframes svhc1{from{transform:translateX(-440px)}to{transform:translateX(1880px)}}
+@keyframes svhc2{from{transform:translateX(-320px)}to{transform:translateX(1760px)}}
+@keyframes svhc3{from{transform:translateX(-560px)}to{transform:translateX(2000px)}}
+.svh-b1{animation:svhb1 38s linear infinite}
+.svh-b2{animation:svhb2 52s linear infinite}
+.svh-b3{animation:svhb3 46s 6s linear infinite}
+.svh-b4{animation:svhb4 68s 14s linear infinite}
+@keyframes svhb1{from{transform:translate(-300px,10px)}to{transform:translate(1740px,-70px)}}
+@keyframes svhb2{from{transform:translate(-200px,60px)}to{transform:translate(1640px,-30px)}}
+@keyframes svhb3{from{transform:translate(-260px,120px)}to{transform:translate(1680px,50px)}}
+@keyframes svhb4{from{transform:translate(-160px,30px)}to{transform:translate(1600px,-50px)}}
+.svh-gl{animation:svhglo 8s ease-in-out infinite alternate}
+@keyframes svhglo{from{opacity:.78}to{opacity:1}}
+.svh-sk{animation:svhtwk 4s ease-in-out infinite alternate}
+@keyframes svhtwk{from{opacity:.32}to{opacity:.68}}
+.svh-gr{animation:svhgrass 6s ease-in-out infinite alternate}
+@keyframes svhgrass{from{transform:skewX(0deg)}to{transform:skewX(2deg)}}
+</style>
+<linearGradient id="svhsky" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0%"   stop-color="#0e0620"/>
+  <stop offset="12%"  stop-color="#521006"/>
+  <stop offset="30%"  stop-color="#a22e08"/>
+  <stop offset="50%"  stop-color="#cf4c0b"/>
+  <stop offset="68%"  stop-color="#ec6c18"/>
+  <stop offset="82%"  stop-color="#f39826"/>
+  <stop offset="93%"  stop-color="#f6bc44"/>
+  <stop offset="100%" stop-color="#f9d56c"/>
+</linearGradient>
+<radialGradient id="svhglow" cx="0.5" cy="1.08" r="0.76">
+  <stop offset="0%"   stop-color="#fde070" stop-opacity="1"/>
+  <stop offset="22%"  stop-color="#f88c18" stop-opacity=".82"/>
+  <stop offset="50%"  stop-color="#c43606" stop-opacity=".36"/>
+  <stop offset="100%" stop-color="#660006" stop-opacity="0"/>
+</radialGradient>
+</defs>
+
+<!-- SKY -->
+<rect width="1440" height="810" fill="url(#svhsky)"/>
+
+<!-- Horizon glow -->
+<ellipse class="svh-gl" cx="720" cy="855" rx="740" ry="460" fill="url(#svhglow)"/>
+
+<!-- Stars (upper sky, fading twinkle) -->
+<g class="svh-sk">
+  <circle cx="88"   cy="66"  r="1.3" fill="#fff" opacity=".62"/>
+  <circle cx="198"  cy="40"  r="1"   fill="#fff" opacity=".50"/>
+  <circle cx="340"  cy="84"  r="1.4" fill="#fff" opacity=".58"/>
+  <circle cx="472"  cy="34"  r="1.1" fill="#fff" opacity=".64"/>
+  <circle cx="618"  cy="58"  r="1"   fill="#fff" opacity=".48"/>
+  <circle cx="790"  cy="44"  r="1.4" fill="#fff" opacity=".58"/>
+  <circle cx="948"  cy="76"  r="1.1" fill="#fff" opacity=".52"/>
+  <circle cx="1092" cy="38"  r="1.3" fill="#fff" opacity=".60"/>
+  <circle cx="1248" cy="66"  r="1"   fill="#fff" opacity=".54"/>
+  <circle cx="1372" cy="48"  r="1.4" fill="#fff" opacity=".46"/>
+  <circle cx="152"  cy="116" r=".9"  fill="#fcd34d" opacity=".34"/>
+  <circle cx="720"  cy="106" r="1.1" fill="#fcd34d" opacity=".30"/>
+  <circle cx="1044" cy="90"  r=".9"  fill="#fcd34d" opacity=".36"/>
+</g>
+
+<!-- CLOUDS -->
+<g class="svh-c1" fill="#c04418" opacity=".22">
+  <ellipse cx="260" cy="170" rx="128" ry="42"/>
+  <ellipse cx="355" cy="152" rx="92"  ry="36"/>
+  <ellipse cx="178" cy="163" rx="80"  ry="28"/>
+</g>
+<g class="svh-c2" fill="#a02c0e" opacity=".17">
+  <ellipse cx="820" cy="122" rx="158" ry="50"/>
+  <ellipse cx="928" cy="105" rx="108" ry="42"/>
+  <ellipse cx="718" cy="118" rx="98"  ry="34"/>
+</g>
+<g class="svh-c3" fill="#c84c18" opacity=".20">
+  <ellipse cx="1180" cy="194" rx="118" ry="38"/>
+  <ellipse cx="1270" cy="178" rx="84"  ry="31"/>
+  <ellipse cx="1095" cy="188" rx="74"  ry="26"/>
+</g>
+
+<!-- BIRDS — 4 flocks, larger and more prominent -->
+<!-- Flock 1: Large V-formation, main sky -->
+<g class="svh-b1" fill="none" stroke="#2a0e04" stroke-width="3" stroke-linecap="round" transform="translate(180,230)">
+  <!-- lead bird -->
+  <path d="M0,0 Q9,-9 18,0"/>
+  <!-- second row -->
+  <path d="M-22,8 Q-13,-1 -4,8"/>
+  <path d="M22,8 Q31,-1 40,8"/>
+  <!-- third row -->
+  <path d="M-44,16 Q-35,7 -26,16"/>
+  <path d="M44,16 Q53,7 62,16"/>
+  <!-- outer stragglers -->
+  <path d="M-65,22 Q-57,14 -49,22"/>
+  <path d="M66,20 Q74,11 82,20"/>
+  <path d="M-84,28 Q-76,20 -68,28"/>
+</g>
+<!-- Flock 2: Mid-sky, medium size -->
+<g class="svh-b2" fill="none" stroke="#2a0e04" stroke-width="2.5" stroke-linecap="round" transform="translate(760,280)" opacity=".85">
+  <path d="M0,0 Q8,-8 16,0"/>
+  <path d="M-19,7 Q-11,0 -3,7"/>
+  <path d="M19,7 Q27,0 35,7"/>
+  <path d="M-38,13 Q-30,6 -22,13"/>
+  <path d="M38,13 Q46,6 54,13"/>
+  <path d="M-56,18 Q-48,11 -40,18"/>
+  <path d="M58,17 Q66,10 74,17"/>
+</g>
+<!-- Flock 3: Higher altitude, smaller -->
+<g class="svh-b3" fill="none" stroke="#1c0a03" stroke-width="2" stroke-linecap="round" transform="translate(380,165)" opacity=".70">
+  <path d="M0,0 Q7,-7 14,0"/>
+  <path d="M-17,6 Q-10,0 -3,6"/>
+  <path d="M17,6 Q24,0 31,6"/>
+  <path d="M-33,11 Q-26,5 -19,11"/>
+  <path d="M34,10 Q41,4 48,10"/>
+  <path d="M-49,15 Q-43,10 -37,15"/>
+</g>
+<!-- Flock 4: Distant small group -->
+<g class="svh-b4" fill="none" stroke="#1c0a03" stroke-width="1.8" stroke-linecap="round" transform="translate(960,200)" opacity=".60">
+  <path d="M0,0 Q6,-6 12,0"/>
+  <path d="M-14,5 Q-8,0 -2,5"/>
+  <path d="M14,5 Q20,0 26,5"/>
+  <path d="M-27,9 Q-21,4 -15,9"/>
+  <path d="M27,9 Q33,4 39,9"/>
+</g>
+
+<!-- FAR HILLS (layer 1) -->
+<path d="M0,508 C100,490 220,498 360,484 C500,470 600,460 740,468
+         C880,476 980,462 1120,450 C1260,438 1360,446 1440,440
+         L1440,810 L0,810 Z" fill="#260c04" opacity=".92"/>
+
+<!-- ELEPHANT RIDGE (mid-ground) -->
+<path d="M0,572 C120,552 280,560 440,547 C600,534 700,530 860,539
+         C1020,548 1140,536 1290,526 C1380,520 1420,524 1440,522
+         L1440,810 L0,810 Z" fill="#1a0803"/>
+
+<!-- ============================================================
+     ELEPHANT HERD — realistic single-path silhouettes
+     Each elephant uses a continuous SVG path approximating:
+     rump → back → neck → head → forehead → trunk → chin → chest → belly → rump
+     with ear as separate filled path, legs as filled shapes
+     ============================================================ -->
+
+<!-- ELEPHANT MACRO (helper comment) — facing right, tail left, trunk right
+     Approximate anatomy: body length ~70px at scale 1, height ~50px
+     Ridge sits at y≈540. Each elephant translated so feet touch ridge. -->
+
+<!-- Elephant A — largest, focal, scale 1.0 at x=680 -->
+<g transform="translate(680,544) scale(1.0)" fill="#0d0501">
+  <!-- Body -->
+  <path d="
+    M-34,-4
+    C-36,-28 -28,-44 -14,-50
+    C0,-56 16,-54 28,-46
+    C40,-38 44,-24 42,-10
+    C40,4 34,12 22,16
+    C10,20 -4,20 -16,16
+    C-28,12 -34,8 -34,-4 Z"/>
+  <!-- Head (connected) -->
+  <path d="
+    M28,-46
+    C36,-52 44,-52 50,-46
+    C56,-40 56,-30 52,-22
+    C48,-14 42,-10 36,-10
+    L28,-46 Z"/>
+  <!-- Ear — large teardrop behind head -->
+  <path d="
+    M14,-52
+    C4,-62 -4,-68 -2,-56
+    C0,-44 8,-38 18,-42
+    C24,-44 22,-50 14,-52 Z"/>
+  <!-- Trunk — curves down then hooks slightly -->
+  <path d="
+    M50,-46
+    C56,-36 58,-22 56,-10
+    C54,2 50,10 48,14
+    C46,18 44,16 44,12
+    C44,8 46,2 48,-10
+    C50,-22 50,-36 46,-44 Z"
+    fill="#0d0501"/>
+  <!-- Tusk — short ivory arc -->
+  <path d="M46,-26 Q52,-16 50,-8" fill="none" stroke="#1a0a03" stroke-width="3" stroke-linecap="round"/>
+  <!-- Front legs -->
+  <rect x="16"  y="14" width="9" height="22" rx="3" fill="#0d0501"/>
+  <rect x="6"   y="14" width="9" height="20" rx="3" fill="#0d0501"/>
+  <!-- Back legs -->
+  <rect x="-30" y="12" width="9" height="20" rx="3" fill="#0d0501"/>
+  <rect x="-20" y="12" width="9" height="22" rx="3" fill="#0d0501"/>
+  <!-- Tail -->
+  <path d="M-34,0 Q-42,8 -40,18 Q-38,22 -36,20" fill="none" stroke="#0d0501" stroke-width="3" stroke-linecap="round"/>
+</g>
+
+<!-- Elephant B — adult female, slightly smaller, scale 0.88 at x=596 -->
+<g transform="translate(596,547) scale(0.88)" fill="#110602">
+  <path d="M-34,-4 C-36,-28 -28,-44 -14,-50 C0,-56 16,-54 28,-46 C40,-38 44,-24 42,-10 C40,4 34,12 22,16 C10,20 -4,20 -16,16 C-28,12 -34,8 -34,-4 Z"/>
+  <path d="M28,-46 C36,-52 44,-52 50,-46 C56,-40 56,-30 52,-22 C48,-14 42,-10 36,-10 L28,-46 Z"/>
+  <path d="M14,-52 C4,-62 -4,-68 -2,-56 C0,-44 8,-38 18,-42 C24,-44 22,-50 14,-52 Z"/>
+  <path d="M50,-46 C56,-36 58,-22 56,-10 C54,2 50,10 48,14 C46,18 44,16 44,12 C44,8 46,2 48,-10 C50,-22 50,-36 46,-44 Z" fill="#110602"/>
+  <rect x="16"  y="14" width="9" height="20" rx="3"/>
+  <rect x="6"   y="14" width="9" height="18" rx="3"/>
+  <rect x="-30" y="12" width="9" height="18" rx="3"/>
+  <rect x="-20" y="12" width="9" height="20" rx="3"/>
+  <path d="M-34,0 Q-42,8 -40,16 Q-38,20 -36,18" fill="none" stroke="#110602" stroke-width="2.5" stroke-linecap="round"/>
+</g>
+
+<!-- Elephant C — adult, scale 0.92 at x=762 -->
+<g transform="translate(762,541) scale(0.92)" fill="#100501">
+  <path d="M-34,-4 C-36,-28 -28,-44 -14,-50 C0,-56 16,-54 28,-46 C40,-38 44,-24 42,-10 C40,4 34,12 22,16 C10,20 -4,20 -16,16 C-28,12 -34,8 -34,-4 Z"/>
+  <path d="M28,-46 C36,-52 44,-52 50,-46 C56,-40 56,-30 52,-22 C48,-14 42,-10 36,-10 L28,-46 Z"/>
+  <path d="M14,-52 C4,-62 -4,-68 -2,-56 C0,-44 8,-38 18,-42 C24,-44 22,-50 14,-52 Z"/>
+  <path d="M50,-46 C56,-36 58,-22 56,-10 C54,2 50,12 46,16 C44,18 42,16 42,12 C42,8 44,2 46,-10 C48,-22 48,-36 44,-44 Z" fill="#100501"/>
+  <path d="M46,-24 Q52,-14 50,-6" fill="none" stroke="#1a0a03" stroke-width="2.5" stroke-linecap="round"/>
+  <rect x="16"  y="14" width="9" height="21" rx="3"/>
+  <rect x="6"   y="14" width="9" height="19" rx="3"/>
+  <rect x="-30" y="12" width="9" height="19" rx="3"/>
+  <rect x="-20" y="12" width="9" height="21" rx="3"/>
+</g>
+
+<!-- Elephant D — bull, scale 0.78 at x=516 -->
+<g transform="translate(516,550) scale(0.78)" fill="#110602">
+  <path d="M-34,-4 C-36,-28 -28,-44 -14,-50 C0,-56 16,-54 28,-46 C40,-38 44,-24 42,-10 C40,4 34,12 22,16 C10,20 -4,20 -16,16 C-28,12 -34,8 -34,-4 Z"/>
+  <path d="M28,-46 C36,-52 44,-52 50,-46 C56,-40 56,-30 52,-22 C48,-14 42,-10 36,-10 L28,-46 Z"/>
+  <path d="M14,-52 C4,-62 -4,-68 -2,-56 C0,-44 8,-38 18,-42 C24,-44 22,-50 14,-52 Z"/>
+  <path d="M50,-46 C56,-36 58,-22 56,-10 C54,2 50,10 48,14 C46,18 44,16 44,12 C44,8 46,2 48,-10 C50,-22 50,-36 46,-44 Z"/>
+  <rect x="16"  y="14" width="9" height="18" rx="3"/>
+  <rect x="6"   y="14" width="9" height="16" rx="3"/>
+  <rect x="-30" y="12" width="9" height="16" rx="3"/>
+  <rect x="-20" y="12" width="9" height="18" rx="3"/>
+</g>
+
+<!-- Elephant E — juvenile, scale 0.60 at x=838 -->
+<g transform="translate(838,550) scale(0.60)" fill="#110602">
+  <path d="M-30,-4 C-32,-24 -24,-38 -12,-44 C0,-50 14,-48 24,-40 C36,-32 38,-20 36,-8 C34,4 28,10 18,14 C8,18 -4,18 -14,14 C-24,10 -30,6 -30,-4 Z"/>
+  <path d="M24,-40 C32,-46 40,-46 46,-40 C52,-34 52,-24 48,-16 C44,-8 38,-6 32,-6 L24,-40 Z"/>
+  <path d="M12,-46 C2,-56 -4,-60 -2,-50 C0,-40 6,-34 16,-38 C22,-40 20,-46 12,-46 Z"/>
+  <path d="M46,-40 C52,-30 54,-18 52,-8 C50,2 46,8 44,12 C42,14 40,12 40,8 C40,4 42,0 44,-8 C46,-18 46,-30 42,-38 Z"/>
+  <rect x="14"  y="12" width="8" height="16" rx="3"/>
+  <rect x="5"   y="12" width="8" height="14" rx="3"/>
+  <rect x="-26" y="10" width="8" height="14" rx="3"/>
+  <rect x="-17" y="10" width="8" height="16" rx="3"/>
+</g>
+
+<!-- Elephant F — baby calf, scale 0.42 at x=720 (beside big bull) -->
+<g transform="translate(720,554) scale(0.42)" fill="#130702">
+  <path d="M-26,-2 C-28,-20 -20,-32 -10,-38 C0,-44 12,-42 20,-35 C30,-28 32,-16 30,-5 C28,6 22,12 14,15 C6,18 -4,18 -12,14 C-20,10 -26,6 -26,-2 Z"/>
+  <path d="M20,-35 C28,-40 36,-40 40,-35 C44,-30 44,-22 40,-15 C36,-8 30,-6 26,-6 L20,-35 Z"/>
+  <path d="M10,-40 C2,-48 -4,-52 -2,-42 C0,-32 6,-28 14,-32 C18,-34 16,-40 10,-40 Z"/>
+  <path d="M40,-35 C44,-26 46,-15 44,-6 C42,3 38,8 36,11 C34,13 32,11 32,8 C32,5 34,0 36,-6 C38,-15 38,-26 34,-33 Z"/>
+  <rect x="12" y="13" width="7" height="14" rx="2"/>
+  <rect x="4"  y="13" width="7" height="12" rx="2"/>
+  <rect x="-22" y="11" width="7" height="12" rx="2"/>
+  <rect x="-14" y="11" width="7" height="14" rx="2"/>
+</g>
+
+<!-- Elephant G — mid-distance, scale 0.68 at x=460 -->
+<g transform="translate(460,549) scale(0.68)" fill="#130702">
+  <path d="M-34,-4 C-36,-28 -28,-44 -14,-50 C0,-56 16,-54 28,-46 C40,-38 44,-24 42,-10 C40,4 34,12 22,16 C10,20 -4,20 -16,16 C-28,12 -34,8 -34,-4 Z"/>
+  <path d="M28,-46 C36,-52 44,-52 50,-46 C56,-40 56,-30 52,-22 C48,-14 42,-10 36,-10 L28,-46 Z"/>
+  <path d="M14,-52 C4,-62 -4,-68 -2,-56 C0,-44 8,-38 18,-42 C24,-44 22,-50 14,-52 Z"/>
+  <path d="M50,-46 C56,-36 58,-22 56,-10 C54,2 50,10 48,14 C46,18 44,16 44,12 C44,8 46,2 48,-10 C50,-22 50,-36 46,-44 Z"/>
+  <rect x="16" y="14" width="8" height="16" rx="3"/>
+  <rect x="6"  y="14" width="8" height="14" rx="3"/>
+  <rect x="-30" y="12" width="8" height="14" rx="3"/>
+  <rect x="-21" y="12" width="8" height="16" rx="3"/>
+</g>
+
+<!-- Elephant H — far distance group, scale 0.52 at x=900 -->
+<g transform="translate(900,534) scale(0.52)" fill="#110602">
+  <path d="M-34,-4 C-36,-28 -28,-44 -14,-50 C0,-56 16,-54 28,-46 C40,-38 44,-24 42,-10 C40,4 34,12 22,16 C10,20 -4,20 -16,16 C-28,12 -34,8 -34,-4 Z"/>
+  <path d="M28,-46 C36,-52 44,-52 50,-46 C56,-40 56,-30 52,-22 C48,-14 42,-10 36,-10 L28,-46 Z"/>
+  <path d="M14,-52 C4,-62 -4,-68 -2,-56 C0,-44 8,-38 18,-42 C24,-44 22,-50 14,-52 Z"/>
+  <path d="M50,-46 C56,-36 58,-22 56,-10 C54,2 50,10 48,14 C46,18 44,16 44,12 C44,8 46,2 48,-10 C50,-22 50,-36 46,-44 Z"/>
+  <rect x="16" y="14" width="8" height="13" rx="2"/>
+  <rect x="6"  y="14" width="8" height="11" rx="2"/>
+  <rect x="-30" y="12" width="8" height="11" rx="2"/>
+  <rect x="-21" y="12" width="8" height="13" rx="2"/>
+</g>
+
+<!-- Elephant I — far distance, scale 0.44 at x=960 -->
+<g transform="translate(960,532) scale(0.44)" fill="#110602">
+  <path d="M-34,-4 C-36,-28 -28,-44 -14,-50 C0,-56 16,-54 28,-46 C40,-38 44,-24 42,-10 C40,4 34,12 22,16 C10,20 -4,20 -16,16 C-28,12 -34,8 -34,-4 Z"/>
+  <path d="M28,-46 C36,-52 44,-52 50,-46 C56,-40 56,-30 52,-22 C48,-14 42,-10 36,-10 L28,-46 Z"/>
+  <path d="M50,-46 C56,-36 58,-22 56,-10 C54,2 50,10 48,14 C46,18 44,16 44,12 C44,8 46,2 48,-10 C50,-22 50,-36 46,-44 Z"/>
+  <rect x="16" y="14" width="8" height="11" rx="2"/>
+  <rect x="6"  y="14" width="8" height="9"  rx="2"/>
+  <rect x="-30" y="12" width="8" height="9"  rx="2"/>
+  <rect x="-21" y="12" width="8" height="11" rx="2"/>
+</g>
+
+<!-- Elephant J — far small, scale 0.36 at x=1010 -->
+<g transform="translate(1010,530) scale(0.36)" fill="#110602">
+  <path d="M-34,-4 C-36,-28 -28,-44 -14,-50 C0,-56 16,-54 28,-46 C40,-38 44,-24 42,-10 C40,4 34,12 22,16 C10,20 -4,20 -16,16 C-28,12 -34,8 -34,-4 Z"/>
+  <path d="M28,-46 C36,-52 44,-52 50,-46 C56,-40 56,-30 52,-22 C48,-14 42,-10 36,-10 L28,-46 Z"/>
+  <path d="M50,-46 C56,-36 58,-22 56,-10 C54,2 50,10 48,14 C46,18 44,16 44,12 C44,8 46,2 48,-10 C50,-22 50,-36 46,-44 Z"/>
+  <rect x="16" y="14" width="7" height="9" rx="2"/>
+  <rect x="6"  y="14" width="7" height="8" rx="2"/>
+  <rect x="-30" y="12" width="7" height="8" rx="2"/>
+  <rect x="-21" y="12" width="7" height="9" rx="2"/>
+</g>
+
+<!-- NEAR GROUND -->
+<path d="M0,630 C180,612 360,620 560,609 C760,598 940,606 1120,596
+         C1280,588 1380,594 1440,590 L1440,810 L0,810 Z" fill="#120601"/>
+
+<!-- ACACIA TREE (trunk base at x=440, y=630) -->
+<g transform="translate(440,630)" fill="#0a0400">
+  <!-- Trunk — slightly curved, tapers upward -->
+  <path d="M-7,0 C-8,-45 -5,-85 -3,-115 C-1,-135 1,-148 3,-162
+           C5,-162 8,-148 7,-132 C5,-100 5,-60 7,0 Z"/>
+  <!-- Main left branch -->
+  <path d="M2,-158 C-8,-167 -28,-174 -56,-180 C-74,-184 -90,-182 -102,-177
+           L-100,-170 C-88,-175 -72,-177 -54,-173 C-26,-167 -6,-160 2,-152 Z"/>
+  <!-- Main right branch -->
+  <path d="M4,-158 C14,-167 34,-174 62,-180 C80,-184 96,-182 108,-177
+           L106,-170 C94,-175 78,-177 60,-173 C32,-167 12,-160 4,-152 Z"/>
+  <!-- Upper-left sub-branch -->
+  <path d="M0,-172 C-12,-182 -36,-190 -64,-197 C-80,-202 -96,-200 -106,-195
+           L-104,-188 C-94,-193 -78,-195 -62,-191 C-34,-184 -10,-176 0,-168 Z"/>
+  <!-- Upper-right sub-branch -->
+  <path d="M6,-172 C18,-182 42,-190 70,-197 C86,-202 102,-200 112,-195
+           L110,-188 C100,-193 84,-195 68,-191 C40,-184 16,-176 6,-168 Z"/>
+  <!-- CANOPY — flat-top multi-layer African acacia silhouette -->
+  <path d="M-162,-190
+           Q-140,-206 -110,-198 Q-80,-190 -55,-200 Q-28,-210 -2,-200
+           Q24,-190 50,-200 Q78,-210 108,-198 Q136,-186 162,-192
+           Q160,-174 128,-170 Q96,-166 64,-172 Q30,-178 -2,-172
+           Q-36,-166 -68,-172 Q-102,-178 -132,-172 Q-158,-168 -162,-190 Z"/>
+  <path d="M-144,-208
+           Q-118,-226 -88,-216 Q-60,-206 -32,-218 Q-6,-228 20,-218
+           Q46,-208 72,-218 Q100,-228 128,-214 Q140,-207 140,-202
+           Q116,-196 84,-200 Q50,-204 20,-198 Q-12,-192 -44,-198
+           Q-78,-204 -110,-198 Q-136,-194 -144,-208 Z"/>
+  <path d="M-118,-228
+           Q-90,-248 -60,-237 Q-32,-226 -6,-238 Q20,-248 46,-236
+           Q70,-224 96,-234 Q116,-242 118,-234
+           Q110,-222 82,-218 Q52,-214 22,-220
+           Q-8,-226 -38,-220 Q-70,-214 -96,-220
+           Q-114,-224 -118,-228 Z"/>
+  <path d="M-78,-248
+           Q-50,-268 -20,-256 Q8,-244 34,-254 Q62,-266 80,-252
+           Q82,-240 56,-236 Q28,-232 0,-238
+           Q-28,-244 -56,-238 Q-74,-234 -78,-248 Z"/>
+</g>
+
+<!-- Second smaller acacia at right side -->
+<g transform="translate(1060,596) scale(0.72)" fill="#0a0400">
+  <path d="M-5,0 C-6,-35 -4,-65 -2,-88 C0,-105 2,-116 4,-126 C6,-126 8,-112 7,-98 C5,-74 5,-44 6,0 Z"/>
+  <path d="M2,-122 C-6,-130 -22,-136 -44,-141 C-58,-144 -70,-142 -80,-138 L-78,-132 C-68,-136 -56,-138 -42,-135 C-20,-130 -4,-124 2,-118 Z"/>
+  <path d="M4,-122 C12,-130 28,-136 50,-141 C64,-144 76,-142 86,-138 L84,-132 C74,-136 62,-138 48,-135 C26,-130 10,-124 4,-118 Z"/>
+  <path d="M-128,-148 Q-108,-162 -82,-154 Q-58,-146 -36,-156 Q-12,-166 10,-156 Q34,-146 58,-156 Q82,-166 106,-152 Q118,-144 116,-140 Q90,-134 62,-138 Q32,-142 8,-136 Q-20,-130 -50,-136 Q-80,-142 -104,-136 Q-122,-132 -128,-148 Z"/>
+  <path d="M-108,-168 Q-84,-184 -58,-174 Q-34,-164 -10,-176 Q14,-186 38,-174 Q62,-162 82,-172 Q100,-180 100,-172 Q78,-160 50,-162 Q18,-164 -4,-158 Q-32,-152 -62,-158 Q-90,-164 -108,-168 Z"/>
+  <path d="M-72,-186 Q-50,-202 -26,-192 Q2,-182 24,-192 Q50,-204 66,-190 Q68,-180 44,-176 Q14,-172 -10,-178 Q-38,-184 -60,-178 Q-68,-176 -72,-186 Z"/>
+</g>
+
+<!-- FOREGROUND GROUND -->
+<path d="M0,720 C200,706 420,714 640,708 C860,702 1040,710 1260,704
+         C1370,701 1420,706 1440,704 L1440,810 L0,810 Z" fill="#0a0300"/>
+
+<!-- GRASS — mid-ground layer (swaying, at y≈609-630) -->
+<g class="svh-gr" fill="none" stroke="#160803" stroke-linecap="round">
+  <!-- Dense grass patches across mid-ground -->
+  <!-- Patch 1 -->
+  <line x1="80"  y1="630" x2="76"  y2="606" stroke-width="2.2"/>
+  <line x1="87"  y1="630" x2="91"  y2="603" stroke-width="2"/>
+  <line x1="94"  y1="630" x2="92"  y2="608" stroke-width="2.2"/>
+  <line x1="101" y1="630" x2="106" y2="604" stroke-width="1.8"/>
+  <line x1="108" y1="630" x2="105" y2="610" stroke-width="2"/>
+  <!-- Patch 2 -->
+  <line x1="218" y1="625" x2="214" y2="601" stroke-width="2.2"/>
+  <line x1="225" y1="625" x2="229" y2="598" stroke-width="2"/>
+  <line x1="232" y1="625" x2="230" y2="603" stroke-width="2.2"/>
+  <line x1="239" y1="625" x2="244" y2="600" stroke-width="1.8"/>
+  <!-- Patch 3 -->
+  <line x1="370" y1="628" x2="366" y2="605" stroke-width="2"/>
+  <line x1="377" y1="628" x2="381" y2="602" stroke-width="2.2"/>
+  <line x1="384" y1="628" x2="382" y2="606" stroke-width="2"/>
+  <line x1="391" y1="628" x2="396" y2="603" stroke-width="1.8"/>
+  <line x1="398" y1="628" x2="395" y2="608" stroke-width="2"/>
+  <!-- Patch 4 -->
+  <line x1="530" y1="622" x2="526" y2="598" stroke-width="2.2"/>
+  <line x1="537" y1="622" x2="541" y2="595" stroke-width="2"/>
+  <line x1="544" y1="622" x2="542" y2="600" stroke-width="2.2"/>
+  <line x1="551" y1="622" x2="556" y2="597" stroke-width="1.8"/>
+  <!-- Patch 5 -->
+  <line x1="750" y1="619" x2="746" y2="595" stroke-width="2"/>
+  <line x1="757" y1="619" x2="761" y2="592" stroke-width="2.2"/>
+  <line x1="764" y1="619" x2="762" y2="597" stroke-width="2"/>
+  <line x1="771" y1="619" x2="776" y2="594" stroke-width="1.8"/>
+  <line x1="778" y1="619" x2="775" y2="599" stroke-width="2"/>
+  <!-- Patch 6 -->
+  <line x1="940"  y1="616" x2="936"  y2="592" stroke-width="2.2"/>
+  <line x1="947"  y1="616" x2="951"  y2="589" stroke-width="2"/>
+  <line x1="954"  y1="616" x2="952"  y2="594" stroke-width="2.2"/>
+  <line x1="961"  y1="616" x2="966"  y2="591" stroke-width="1.8"/>
+  <!-- Patch 7 -->
+  <line x1="1130" y1="612" x2="1126" y2="588" stroke-width="2"/>
+  <line x1="1137" y1="612" x2="1141" y2="585" stroke-width="2.2"/>
+  <line x1="1144" y1="612" x2="1142" y2="590" stroke-width="2"/>
+  <line x1="1151" y1="612" x2="1156" y2="587" stroke-width="1.8"/>
+  <line x1="1158" y1="612" x2="1155" y2="592" stroke-width="2"/>
+  <!-- Patch 8 -->
+  <line x1="1310" y1="609" x2="1306" y2="585" stroke-width="2.2"/>
+  <line x1="1317" y1="609" x2="1321" y2="582" stroke-width="2"/>
+  <line x1="1324" y1="609" x2="1322" y2="587" stroke-width="2.2"/>
+  <line x1="1331" y1="609" x2="1336" y2="584" stroke-width="1.8"/>
+</g>
+
+<!-- GRASS TUFTS — foreground tall (y≈704-720), very prominent -->
+<g fill="#0c0401" stroke="#0c0401" stroke-linecap="round">
+  <!-- Cluster 1 -->
+  <path d="M42,720  Q44,698 47,720"  stroke-width="2.5"/>
+  <path d="M48,720  Q52,692 57,720"  stroke-width="2.8"/>
+  <path d="M55,720  Q57,700 60,720"  stroke-width="2.2"/>
+  <path d="M62,720  Q66,694 71,720"  stroke-width="2.5"/>
+  <path d="M69,720  Q71,702 74,720"  stroke-width="2"/>
+  <!-- Cluster 2 -->
+  <path d="M140,722 Q142,700 145,722" stroke-width="2.5"/>
+  <path d="M147,722 Q151,694 156,722" stroke-width="2.8"/>
+  <path d="M154,722 Q156,702 159,722" stroke-width="2.2"/>
+  <path d="M161,722 Q165,696 170,722" stroke-width="2.5"/>
+  <!-- Cluster 3 -->
+  <path d="M260,718 Q262,696 265,718" stroke-width="2.5"/>
+  <path d="M267,718 Q271,690 276,718" stroke-width="2.8"/>
+  <path d="M274,718 Q276,698 279,718" stroke-width="2.2"/>
+  <path d="M281,718 Q285,693 290,718" stroke-width="2.5"/>
+  <path d="M288,718 Q290,700 293,718" stroke-width="2"/>
+  <!-- Cluster 4 -->
+  <path d="M385,724 Q387,702 390,724" stroke-width="2.5"/>
+  <path d="M392,724 Q396,696 401,724" stroke-width="2.8"/>
+  <path d="M399,724 Q401,704 404,724" stroke-width="2.2"/>
+  <path d="M406,724 Q410,698 415,724" stroke-width="2.5"/>
+  <!-- Cluster 5 -->
+  <path d="M510,720 Q512,698 515,720" stroke-width="2.5"/>
+  <path d="M517,720 Q521,692 526,720" stroke-width="2.8"/>
+  <path d="M524,720 Q526,700 529,720" stroke-width="2.2"/>
+  <path d="M531,720 Q535,694 540,720" stroke-width="2.5"/>
+  <path d="M538,720 Q540,702 543,720" stroke-width="2"/>
+  <!-- Cluster 6 -->
+  <path d="M640,722 Q642,700 645,722" stroke-width="2.5"/>
+  <path d="M647,722 Q651,694 656,722" stroke-width="2.8"/>
+  <path d="M654,722 Q656,702 659,722" stroke-width="2.2"/>
+  <path d="M661,722 Q665,696 670,722" stroke-width="2.5"/>
+  <!-- Cluster 7 -->
+  <path d="M768,718 Q770,696 773,718" stroke-width="2.5"/>
+  <path d="M775,718 Q779,690 784,718" stroke-width="2.8"/>
+  <path d="M782,718 Q784,698 787,718" stroke-width="2.2"/>
+  <path d="M789,718 Q793,693 798,718" stroke-width="2.5"/>
+  <path d="M796,718 Q798,700 801,718" stroke-width="2"/>
+  <!-- Cluster 8 -->
+  <path d="M900,722 Q902,700 905,722" stroke-width="2.5"/>
+  <path d="M907,722 Q911,694 916,722" stroke-width="2.8"/>
+  <path d="M914,722 Q916,702 919,722" stroke-width="2.2"/>
+  <path d="M921,722 Q925,696 930,722" stroke-width="2.5"/>
+  <!-- Cluster 9 -->
+  <path d="M1034,720 Q1036,698 1039,720" stroke-width="2.5"/>
+  <path d="M1041,720 Q1045,692 1050,720" stroke-width="2.8"/>
+  <path d="M1048,720 Q1050,700 1053,720" stroke-width="2.2"/>
+  <path d="M1055,720 Q1059,694 1064,720" stroke-width="2.5"/>
+  <path d="M1062,720 Q1064,702 1067,720" stroke-width="2"/>
+  <!-- Cluster 10 -->
+  <path d="M1170,722 Q1172,700 1175,722" stroke-width="2.5"/>
+  <path d="M1177,722 Q1181,694 1186,722" stroke-width="2.8"/>
+  <path d="M1184,722 Q1186,702 1189,722" stroke-width="2.2"/>
+  <path d="M1191,722 Q1195,696 1200,722" stroke-width="2.5"/>
+  <!-- Cluster 11 -->
+  <path d="M1300,718 Q1302,696 1305,718" stroke-width="2.5"/>
+  <path d="M1307,718 Q1311,690 1316,718" stroke-width="2.8"/>
+  <path d="M1314,718 Q1316,698 1319,718" stroke-width="2.2"/>
+  <path d="M1321,718 Q1325,693 1330,718" stroke-width="2.5"/>
+  <path d="M1328,718 Q1330,700 1333,718" stroke-width="2"/>
+  <!-- Cluster 12 -->
+  <path d="M1390,722 Q1392,700 1395,722" stroke-width="2.5"/>
+  <path d="M1397,722 Q1401,694 1406,722" stroke-width="2.8"/>
+  <path d="M1404,722 Q1406,702 1409,722" stroke-width="2.2"/>
+  <path d="M1411,722 Q1415,696 1420,722" stroke-width="2.5"/>
+</g>
+</svg>

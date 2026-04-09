@@ -11,7 +11,7 @@
     <!-- Email Lookup -->
     <div class="lookup-shell">
       <div class="lookup-row">
-        <input type="email" id="lookupEmail" placeholder="yourname@belgiumcampus.ac.za" class="lookup-input">
+        <input type="email" id="lookupEmail" placeholder="e.g. 601067@<%= reporterDomain %>" class="lookup-input">
         <button onclick="loadReports()" class="btn btn-navy"><i class="fa-solid fa-magnifying-glass"></i> Find Reports</button>
       </div>
     </div>
@@ -72,7 +72,7 @@ let allReports = [];
 async function loadReports() {
   const email = document.getElementById('lookupEmail').value.trim();
   if (!email) return showToast('Please enter your email', 'error');
-  if (!email.endsWith('@belgiumcampus.ac.za')) return showToast('Must be a @belgiumcampus.ac.za email', 'error');
+  if (!email.endsWith('@<%= reporterDomain %>')) return showToast('Must be a @<%= reporterDomain %> email', 'error');
 
   const container = document.getElementById('reportsContainer');
   container.innerHTML = '<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> Loading reports...</div>';

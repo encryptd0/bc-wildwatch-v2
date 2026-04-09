@@ -87,7 +87,7 @@ function sessionLocals(req, res, next) {
 function requireAuth(req, res, next) {
   const user = getSessionUser(req);
   if (!user) {
-    return res.redirect('/login?next=' + encodeURIComponent(req.originalUrl));
+    return res.redirect('/login/student?next=' + encodeURIComponent(req.originalUrl));
   }
   req.sessionUser = user;
   res.locals.sessionUser = user;

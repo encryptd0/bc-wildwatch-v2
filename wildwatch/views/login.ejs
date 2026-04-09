@@ -62,21 +62,21 @@
           <label for="inputEmail">Campus Email</label>
           <div class="login-input-wrap">
             <i class="fa-solid fa-envelope login-input-icon"></i>
-            <input type="email" id="inputEmail" placeholder="yourname@belgiumcampus.ac.za" autocomplete="email">
+            <input type="email" id="inputEmail" placeholder="yourname@<%= campusDomain %>" autocomplete="email">
           </div>
-          <span class="login-hint">Must be a @belgiumcampus.ac.za address</span>
+          <span class="login-hint">Must be a @<%= campusDomain %> address</span>
         </div>
 
         <div class="login-error" id="step1Error"></div>
 
-        <button class="btn btn-amber btn-full btn-lg login-submit-btn" id="btnStep1" onclick="beginLogin()">
+        <button class="btn btn-amber btn-full btn-lg login-submit-btn" id="btnStep1">
           <span id="btnStep1Text">Continue <i class="fa-solid fa-arrow-right"></i></span>
           <span id="btnStep1Spinner" style="display:none;"><i class="fa-solid fa-spinner fa-spin"></i> Verifying...</span>
         </button>
 
         <p class="login-footer-note">
           <i class="fa-solid fa-circle-info"></i>
-          Admin access only. Student features don't require sign-in.
+          Student? <a href="/login/student" class="login-link">Sign in here</a> with your campus email.
         </p>
       </div>
 
@@ -100,7 +100,7 @@
           <div class="setup-key-wrap">
             <span class="setup-key-label">Manual entry key:</span>
             <code class="setup-key-code" id="setupKeyCode"></code>
-            <button type="button" class="btn-copy" onclick="copyKey()" title="Copy key">
+            <button type="button" class="btn-copy" id="btnCopyKey" title="Copy key">
               <i class="fa-solid fa-copy"></i>
             </button>
           </div>
@@ -117,12 +117,12 @@
 
         <div class="login-error" id="step2Error"></div>
 
-        <button class="btn btn-amber btn-full btn-lg login-submit-btn" id="btnStep2" onclick="verifyLogin()">
+        <button class="btn btn-amber btn-full btn-lg login-submit-btn" id="btnStep2">
           <span id="btnStep2Text"><i class="fa-solid fa-check-circle"></i> Verify & Sign In</span>
           <span id="btnStep2Spinner" style="display:none;"><i class="fa-solid fa-spinner fa-spin"></i> Verifying...</span>
         </button>
 
-        <button type="button" class="btn-text-link" onclick="goBackToStep1()">
+        <button type="button" class="btn-text-link" id="btnBack">
           <i class="fa-solid fa-arrow-left"></i> Back to sign-in
         </button>
       </div>
@@ -162,7 +162,7 @@ async function beginLogin() {
 
   if (!name)  return showError('step1Error', 'Please enter your full name.');
   if (!email) return showError('step1Error', 'Please enter your campus email.');
-  if (!email.endsWith('@belgiumcampus.ac.za')) return showError('step1Error', 'Must be a @belgiumcampus.ac.za email address.');
+  if (!email.endsWith('@<%= campusDomain %>')) return showError('step1Error', 'Must be a @<%= campusDomain %> email address.');
 
   setStep1Loading(true);
   try {
@@ -237,14 +237,18 @@ function goBackToStep1() {
   showError('step2Error', '');
 }
 
-function copyKey() {
+// Wire up buttons via addEventListener (CSP: script-src-attr 'none' blocks onclick attributes)
+document.getElementById('btnStep1').addEventListener('click', beginLogin);
+document.getElementById('btnStep2').addEventListener('click', verifyLogin);
+document.getElementById('btnBack').addEventListener('click', goBackToStep1);
+document.getElementById('btnCopyKey').addEventListener('click', function() {
   var key = document.getElementById('setupKeyCode').textContent;
   navigator.clipboard.writeText(key).then(function() {
-    var btn = document.querySelector('.btn-copy i');
-    btn.className = 'fa-solid fa-check';
-    setTimeout(function() { btn.className = 'fa-solid fa-copy'; }, 2000);
+    var icon = document.querySelector('#btnCopyKey i');
+    icon.className = 'fa-solid fa-check';
+    setTimeout(function() { icon.className = 'fa-solid fa-copy'; }, 2000);
   });
-}
+});
 
 // OTP auto-format: add space after 3 digits
 document.getElementById('inputOtp').addEventListener('input', function() {
