@@ -1,0 +1,184 @@
+<%
+var TWEMOJI = 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/';
+var ANIMAL_ICONS = {
+  'Snake':      TWEMOJI + '1f40d.png',
+  'Bees/Wasps': TWEMOJI + '1f41d.png',
+  'Ants':       TWEMOJI + '1f41c.png',
+  'Lizard':     TWEMOJI + '1f98e.png',
+  'Cockroaches':TWEMOJI + '1fab3.png',
+  'Stray Dog':  TWEMOJI + '1f415.png',
+  'Stray Cat':  TWEMOJI + '1f408.png',
+  'Spider':     TWEMOJI + '1f577.png',
+  'Rat/Mouse':  TWEMOJI + '1f400.png',
+  'Other':      TWEMOJI + '2753.png'
+};
+function getAnimalIcon(type) { return ANIMAL_ICONS[type] || ANIMAL_ICONS['Other']; }
+function timeAgo(date) {
+  var s = Math.floor((new Date() - new Date(date)) / 1000);
+  if (s < 60) return s + 's ago';
+  if (s < 3600) return Math.floor(s/60) + 'm ago';
+  if (s < 86400) return Math.floor(s/3600) + 'h ago';
+  return Math.floor(s/86400) + 'd ago';
+}
+%>
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<% if (typeof dbOffline !== 'undefined' && dbOffline) { %>
+<div class="db-banner">
+  <i class="fa-solid fa-circle-exclamation"></i>
+  Database not connected &mdash; set <strong>MONGODB_URI</strong> in your <code>.env</code> file and restart.
+  <a href="/health">Check status</a>
+</div>
+<% } %>
+
+<main>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow"><i class="fa-solid fa-shield-halved"></i> Belgium Campus iTversity</div>
+      <h1 class="hero-title">BC WildWatch<sup>™</sup></h1>
+      <p class="hero-tagline">Report. Alert. Stay Safe.</p>
+      <p class="hero-desc">The official campus wildlife safety platform. Report animal sightings in under 60 seconds and keep the Belgium Campus community protected.</p>
+      <div class="hero-actions">
+        <a href="/report" class="btn btn-amber btn-lg"><i class="fa-solid fa-triangle-exclamation"></i> Report a Sighting</a>
+        <a href="/chatbot" class="btn btn-outline-white btn-lg"><i class="fa-solid fa-robot"></i> Ask Safety Bot</a>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <i class="fa-solid fa-angles-down"></i>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats-strip">
+    <div class="stats-strip-inner">
+      <div class="stat-cell">
+        <span class="stat-num"><%= stats.todayCount %></span>
+        <span class="stat-lbl">Reports Today</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num"><%= stats.resolvedWeek %></span>
+        <span class="stat-lbl">Resolved This Week</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num"><%= stats.topAnimal %></span>
+        <span class="stat-lbl">Most Reported Animal</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- How It Works -->
+  <section class="section section-white">
+    <div class="container">
+      <div class="section-label"><i class="fa-solid fa-circle-dot" style="font-size:.55em;opacity:.7"></i> Platform</div>
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-sub">Three simple tools to keep Belgium Campus safe &mdash; report, track, and get advice all in one place.</p>
+      <div class="feature-grid">
+        <a href="/report" class="feature-card">
+          <div class="feature-icon-wrap"><i class="fa-solid fa-triangle-exclamation feature-fa-icon"></i></div>
+          <h3>Report a Sighting</h3>
+          <p>Log any animal sighting in under 60 seconds. Include photos, location, and severity &mdash; campus security is notified instantly.</p>
+          <span class="feature-arrow">Report Now <span>&rarr;</span></span>
+        </a>
+        <a href="/my-reports" class="feature-card">
+          <div class="feature-icon-wrap"><i class="fa-solid fa-clipboard-list feature-fa-icon"></i></div>
+          <h3>Track My Reports</h3>
+          <p>Look up all your submitted incidents by campus email and follow their resolution status in real time.</p>
+          <span class="feature-arrow">View Reports <span>&rarr;</span></span>
+        </a>
+        <a href="/chatbot" class="feature-card">
+          <div class="feature-icon-wrap"><i class="fa-solid fa-robot feature-fa-icon"></i></div>
+          <h3>AI Safety Chatbot</h3>
+          <p>Get instant, AI-powered safety advice about any animal on campus &mdash; 24 hours a day, 7 days a week.</p>
+          <span class="feature-arrow">Chat Now <span>&rarr;</span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Feed -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="feed-header">
+        <div>
+          <div class="section-label"><i class="fa-solid fa-circle-dot" style="font-size:.55em;opacity:.7"></i> Real-time</div>
+          <h2 class="section-title">Live Incident Feed</h2>
+        </div>
+        <div class="feed-live-pill">
+          <span class="feed-live-dot"></span>
+          Last 5 Reports
+        </div>
+      </div>
+      <div class="feed-list">
+        <% if (feed && feed.length > 0) { %>
+          <% feed.forEach(function(item) { %>
+            <div class="feed-item">
+              <div class="feed-item-icon">
+                <img src="<%= getAnimalIcon(item.animalType) %>" alt="<%= item.animalType %>" class="animal-icon-img">
+              </div>
+              <div class="feed-item-body">
+                <strong><%= item.animalType %> spotted at <%= item.location %></strong>
+                <p>Reported <%= timeAgo(item.createdAt) %></p>
+              </div>
+              <div class="feed-item-meta">
+                <span class="badge severity-<%= item.severity.toLowerCase() %>"><%= item.severity %></span>
+                <span class="feed-time"><%= timeAgo(item.createdAt) %></span>
+              </div>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <div class="feed-empty">
+            <i class="fa-solid fa-leaf feed-empty-icon"></i>
+            <strong>All clear!</strong><br>No recent incidents reported. Campus is safe.
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Animal Guide -->
+  <section class="section section-white">
+    <div class="container">
+      <div class="section-label"><i class="fa-solid fa-circle-dot" style="font-size:.55em;opacity:.7"></i> Safety Guide</div>
+      <h2 class="section-title">Common Campus Animals</h2>
+      <p class="section-sub">Know what to do when you encounter these animals on campus. When in doubt, keep your distance and call Security on Ext. 101.</p>
+      <div class="animal-grid">
+        <div class="animal-card animal-danger">
+          <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f40d.png" alt="Snake" class="animal-card-img">
+          <h4>Snake</h4>
+          <p>Keep distance. Do not handle. Call Ext. 101 immediately.</p>
+        </div>
+        <div class="animal-card animal-danger">
+          <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f41d.png" alt="Bees / Wasps" class="animal-card-img">
+          <h4>Bees / Wasps</h4>
+          <p>Move away slowly. Avoid swatting. Seek medical help if stung multiple times.</p>
+        </div>
+        <div class="animal-card animal-warning">
+          <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f415.png" alt="Stray Dog" class="animal-card-img">
+          <h4>Stray Dog</h4>
+          <p>Do not approach. Report to security. Avoid sudden movements.</p>
+        </div>
+        <div class="animal-card animal-warning">
+          <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f577.png" alt="Spider" class="animal-card-img">
+          <h4>Spider</h4>
+          <p>Do not touch. Some species are venomous. Report to maintenance.</p>
+        </div>
+        <div class="animal-card animal-info">
+          <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f400.png" alt="Rat / Mouse" class="animal-card-img">
+          <h4>Rat / Mouse</h4>
+          <p>Do not handle. Report to maintenance for pest control.</p>
+        </div>
+        <div class="animal-card animal-info">
+          <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1fab3.png" alt="Cockroach" class="animal-card-img">
+          <h4>Cockroach</h4>
+          <p>Indicates sanitation issue. Report for pest control treatment.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<%- include('partials/footer') %>

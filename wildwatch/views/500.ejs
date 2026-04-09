@@ -1,0 +1,17 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+<main class="error-page">
+  <div class="error-container">
+    <div class="error-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+    <h1>500</h1>
+    <h2>Server Error</h2>
+    <p>Something went wrong on our end. Please try again later.</p>
+    <% if (typeof error !== 'undefined' && error) { %>
+      <code class="error-detail"><%= error %></code>
+    <% } %>
+    <div class="error-actions">
+      <a href="/home" class="btn btn-primary"><i class="fa-solid fa-house"></i> Go Home</a>
+    </div>
+  </div>
+</main>
+<%- include('partials/footer') %>

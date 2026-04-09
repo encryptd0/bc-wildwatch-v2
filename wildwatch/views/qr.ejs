@@ -1,0 +1,90 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<main class="page-main">
+  <div class="container">
+    <div class="page-header">
+      <h1><i class="fa-solid fa-mobile-screen"></i> QR Code</h1>
+      <p>Share BC WildWatch™ with your fellow students. Scan to access the reporting system instantly.</p>
+    </div>
+
+    <div class="qr-container">
+      <div class="qr-card">
+        <div class="qr-brand">
+          <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f981.png" class="qr-logo-img" alt="BC WildWatch">
+          <div>
+            <h2>BC WildWatch<sup>™</sup></h2>
+            <p>Campus Animal Safety</p>
+          </div>
+        </div>
+
+        <div class="qr-image-wrapper">
+          <img src="/qr/image" alt="QR Code for BC WildWatch" class="qr-image" id="qrImage">
+          <div class="qr-scan-label">SCAN TO ACCESS</div>
+        </div>
+
+        <div class="qr-url">
+          <span class="qr-url-label">App URL:</span>
+          <a href="<%= appUrl %>" class="qr-url-link"><%= appUrl %></a>
+        </div>
+
+        <div class="qr-actions">
+          <a href="/qr/image" download="bc-wildwatch-qr.png" class="btn btn-primary"><i class="fa-solid fa-file-arrow-down"></i> Download QR Code</a>
+          <button onclick="printQR()" class="btn btn-secondary"><i class="fa-solid fa-print"></i> Print</button>
+        </div>
+
+        <div class="qr-instructions">
+          <h4>How to use:</h4>
+          <ol>
+            <li>Open your phone's camera app</li>
+            <li>Point it at the QR code</li>
+            <li>Tap the notification that appears</li>
+            <li>You'll be taken directly to BC WildWatch™</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="qr-info">
+        <h3>Why use BC WildWatch™?</h3>
+        <div class="qr-feature-list">
+          <div class="qr-feature">
+            <span><i class="fa-solid fa-triangle-exclamation"></i></span>
+            <div>
+              <strong>Quick Reporting</strong>
+              <p>Report animal sightings in under 60 seconds</p>
+            </div>
+          </div>
+          <div class="qr-feature">
+            <span><i class="fa-solid fa-robot"></i></span>
+            <div>
+              <strong>AI Safety Advice</strong>
+              <p>Get instant guidance from our safety chatbot</p>
+            </div>
+          </div>
+          <div class="qr-feature">
+            <span><i class="fa-solid fa-chart-bar"></i></span>
+            <div>
+              <strong>Real-time Tracking</strong>
+              <p>Monitor the status of your reports</p>
+            </div>
+          </div>
+          <div class="qr-feature">
+            <span><i class="fa-solid fa-shield-halved"></i></span>
+            <div>
+              <strong>Campus Safety</strong>
+              <p>Keep our campus community safe together</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+function printQR() {
+  window.print();
+}
+</script>
+
+<%- include('partials/footer') %>

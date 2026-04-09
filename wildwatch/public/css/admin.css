@@ -1,0 +1,217 @@
+/* ================================================================
+   BC WildWatch™ — Admin Dashboard Styles
+   ================================================================ */
+
+/* ── Admin Header ────────────────────────────────────────────── */
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.admin-header h1 {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--heading);
+  letter-spacing: -0.5px;
+}
+
+.admin-actions { display: flex; gap: 0.65rem; flex-wrap: wrap; }
+
+/* ── Stats Grid ──────────────────────────────────────────────── */
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.admin-stat-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 1.4rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  transition: box-shadow var(--base) var(--ease);
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--border);
+}
+
+.admin-stat-card:hover { box-shadow: var(--shadow); }
+.stat-pending::before  { background: var(--amber); }
+.stat-progress::before { background: var(--orange); }
+.stat-resolved::before { background: var(--emerald); }
+
+.admin-stat-num {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.admin-stat-label {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ── Filters ─────────────────────────────────────────────────── */
+.admin-filters {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+  align-items: center;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 0.85rem 1.1rem;
+}
+
+.admin-filters select {
+  padding: 0.42rem 2rem 0.42rem 0.8rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  font-size: 0.84rem;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--fast) var(--ease);
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+}
+.admin-filters select:focus { border-color: var(--sky); }
+
+/* ── Table ───────────────────────────────────────────────────── */
+.admin-table-wrapper {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow: auto;
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.87rem;
+  min-width: 920px;
+}
+
+.admin-table thead th {
+  background: var(--surface);
+  padding: 0.9rem 1rem;
+  text-align: left;
+  font-size: 0.73rem;
+  font-weight: 700;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.admin-table thead th:first-child { padding-left: 1.25rem; }
+
+.admin-table tbody tr {
+  border-bottom: 1px solid var(--surface-2);
+  transition: background var(--fast) var(--ease);
+}
+.admin-table tbody tr:last-child { border-bottom: none; }
+.admin-table tbody tr:hover { background: var(--surface); }
+
+.admin-table td {
+  padding: 0.82rem 1rem;
+  color: var(--text);
+  vertical-align: middle;
+}
+.admin-table td:first-child { padding-left: 1.25rem; }
+
+.id-cell {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.admin-table td small {
+  display: block;
+  font-size: 0.74rem;
+  color: var(--muted);
+  margin-top: 0.1rem;
+}
+
+.table-loading,
+.table-empty {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+/* ── Inline Controls ─────────────────────────────────────────── */
+.status-select {
+  padding: 0.35rem 1.8rem 0.35rem 0.65rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  font-size: 0.82rem;
+  cursor: pointer;
+  outline: none;
+  background: var(--surface);
+  color: var(--text);
+  transition: border-color var(--fast) var(--ease);
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.45rem center;
+}
+.status-select:focus { border-color: var(--sky); }
+
+.notes-input {
+  width: 100%;
+  min-width: 170px;
+  padding: 0.42rem 0.7rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  font-size: 0.81rem;
+  resize: vertical;
+  min-height: 56px;
+  max-height: 110px;
+  outline: none;
+  transition: border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
+  background: var(--white);
+  color: var(--text);
+  font-family: var(--font);
+}
+.notes-input:focus { border-color: var(--sky); box-shadow: 0 0 0 2px rgba(59,130,246,.1); }
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .admin-stats { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .admin-header { flex-direction: column; align-items: flex-start; }
+  .admin-stats { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+}

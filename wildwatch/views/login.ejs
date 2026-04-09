@@ -1,0 +1,262 @@
+<%- include('partials/header') %>
+
+<div class="login-page">
+
+  <!-- Left panel — branding -->
+  <div class="login-panel-left">
+    <a href="/home" class="login-brand">
+      <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f981.png" alt="BC WildWatch" class="login-brand-img">
+      <div>
+        <span class="login-brand-name">BC WildWatch<sup>™</sup></span>
+        <span class="login-brand-sub">Campus Safety System</span>
+      </div>
+    </a>
+
+    <div class="login-hero-text">
+      <h1>Admin Access</h1>
+      <p>Secure two-factor authentication protects campus incident data. Verify your identity with your authenticator app.</p>
+    </div>
+
+    <div class="login-features">
+      <div class="login-feature">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span>TOTP two-factor authentication</span>
+      </div>
+      <div class="login-feature">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span>Session expires after 8 hours</span>
+      </div>
+      <div class="login-feature">
+        <i class="fa-solid fa-user-lock"></i>
+        <span>Belgium Campus accounts only</span>
+      </div>
+    </div>
+
+    <div class="login-security-note">
+      <i class="fa-solid fa-lock"></i>
+      <span>All connections are encrypted. Never share your verification codes.</span>
+    </div>
+  </div>
+
+  <!-- Right panel — form -->
+  <div class="login-panel-right">
+    <div class="login-card">
+
+      <!-- Step 1: Identity -->
+      <div class="login-step" id="step1">
+        <div class="login-step-header">
+          <div class="login-step-badge">Step 1 of 2</div>
+          <h2>Sign In</h2>
+          <p>Enter your Belgium Campus credentials to continue.</p>
+        </div>
+
+        <div class="login-form-group">
+          <label for="inputName">Full Name</label>
+          <div class="login-input-wrap">
+            <i class="fa-solid fa-user login-input-icon"></i>
+            <input type="text" id="inputName" placeholder="e.g. Thabo Mokoena" autocomplete="name">
+          </div>
+        </div>
+
+        <div class="login-form-group">
+          <label for="inputEmail">Campus Email</label>
+          <div class="login-input-wrap">
+            <i class="fa-solid fa-envelope login-input-icon"></i>
+            <input type="email" id="inputEmail" placeholder="yourname@belgiumcampus.ac.za" autocomplete="email">
+          </div>
+          <span class="login-hint">Must be a @belgiumcampus.ac.za address</span>
+        </div>
+
+        <div class="login-error" id="step1Error"></div>
+
+        <button class="btn btn-amber btn-full btn-lg login-submit-btn" id="btnStep1" onclick="beginLogin()">
+          <span id="btnStep1Text">Continue <i class="fa-solid fa-arrow-right"></i></span>
+          <span id="btnStep1Spinner" style="display:none;"><i class="fa-solid fa-spinner fa-spin"></i> Verifying...</span>
+        </button>
+
+        <p class="login-footer-note">
+          <i class="fa-solid fa-circle-info"></i>
+          Admin access only. Student features don't require sign-in.
+        </p>
+      </div>
+
+      <!-- Step 2: TOTP -->
+      <div class="login-step" id="step2" style="display:none;">
+        <div class="login-step-header">
+          <div class="login-step-badge">Step 2 of 2</div>
+          <h2>Verify Identity</h2>
+          <p id="step2Subtitle">Enter the 6-digit code from your authenticator app.</p>
+        </div>
+
+        <!-- Setup mode: show QR code -->
+        <div id="setupSection" style="display:none;">
+          <div class="setup-banner">
+            <i class="fa-solid fa-circle-info"></i>
+            <strong>First-time setup</strong> — Scan this QR code with Google Authenticator, Microsoft Authenticator, or any TOTP app.
+          </div>
+          <div class="setup-qr-wrap">
+            <img id="setupQrImg" src="" alt="2FA QR Code" class="setup-qr-img">
+          </div>
+          <div class="setup-key-wrap">
+            <span class="setup-key-label">Manual entry key:</span>
+            <code class="setup-key-code" id="setupKeyCode"></code>
+            <button type="button" class="btn-copy" onclick="copyKey()" title="Copy key">
+              <i class="fa-solid fa-copy"></i>
+            </button>
+          </div>
+          <p class="setup-note">After scanning, enter the 6-digit code shown in your app below.</p>
+          <div class="setup-divider"></div>
+        </div>
+
+        <div class="login-form-group">
+          <label for="inputOtp">Verification Code</label>
+          <div class="otp-input-wrap">
+            <input type="text" id="inputOtp" inputmode="numeric" pattern="[0-9]{6}" maxlength="7" placeholder="000 000" autocomplete="one-time-code" class="otp-input">
+          </div>
+        </div>
+
+        <div class="login-error" id="step2Error"></div>
+
+        <button class="btn btn-amber btn-full btn-lg login-submit-btn" id="btnStep2" onclick="verifyLogin()">
+          <span id="btnStep2Text"><i class="fa-solid fa-check-circle"></i> Verify & Sign In</span>
+          <span id="btnStep2Spinner" style="display:none;"><i class="fa-solid fa-spinner fa-spin"></i> Verifying...</span>
+        </button>
+
+        <button type="button" class="btn-text-link" onclick="goBackToStep1()">
+          <i class="fa-solid fa-arrow-left"></i> Back to sign-in
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<input type="hidden" id="challengeToken" value="">
+<input type="hidden" id="nextUrl" value="<%= next %>">
+
+<script>
+var challengeToken = '';
+
+function setStep1Loading(loading) {
+  document.getElementById('btnStep1').disabled = loading;
+  document.getElementById('btnStep1Text').style.display    = loading ? 'none'   : 'inline';
+  document.getElementById('btnStep1Spinner').style.display = loading ? 'inline' : 'none';
+}
+
+function setStep2Loading(loading) {
+  document.getElementById('btnStep2').disabled = loading;
+  document.getElementById('btnStep2Text').style.display    = loading ? 'none'   : 'inline';
+  document.getElementById('btnStep2Spinner').style.display = loading ? 'inline' : 'none';
+}
+
+function showError(id, msg) {
+  var el = document.getElementById(id);
+  el.textContent = msg;
+  el.style.display = msg ? 'block' : 'none';
+}
+
+async function beginLogin() {
+  showError('step1Error', '');
+  var name  = document.getElementById('inputName').value.trim();
+  var email = document.getElementById('inputEmail').value.trim();
+
+  if (!name)  return showError('step1Error', 'Please enter your full name.');
+  if (!email) return showError('step1Error', 'Please enter your campus email.');
+  if (!email.endsWith('@belgiumcampus.ac.za')) return showError('step1Error', 'Must be a @belgiumcampus.ac.za email address.');
+
+  setStep1Loading(true);
+  try {
+    var res  = await fetch('/auth/begin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email })
+    });
+    var data = await res.json();
+    setStep1Loading(false);
+
+    if (!res.ok) return showError('step1Error', data.error || 'Something went wrong.');
+
+    challengeToken = data.challengeToken;
+
+    if (data.setupRequired) {
+      document.getElementById('setupSection').style.display = 'block';
+      document.getElementById('setupQrImg').src             = data.setupQr;
+      document.getElementById('setupKeyCode').textContent   = data.setupKey;
+      document.getElementById('step2Subtitle').textContent  = 'Scan the QR code with your authenticator app, then enter the code shown.';
+    }
+
+    document.getElementById('step1').style.display = 'none';
+    document.getElementById('step2').style.display = 'block';
+    document.getElementById('inputOtp').focus();
+
+  } catch (err) {
+    setStep1Loading(false);
+    showError('step1Error', 'Connection error. Please try again.');
+  }
+}
+
+async function verifyLogin() {
+  showError('step2Error', '');
+  var code = document.getElementById('inputOtp').value.replace(/\s+/g, '');
+  if (!code) return showError('step2Error', 'Please enter the verification code.');
+  if (!/^\d{6}$/.test(code)) return showError('step2Error', 'Code must be exactly 6 digits.');
+
+  var next = document.getElementById('nextUrl').value || '/admin';
+
+  setStep2Loading(true);
+  try {
+    var res  = await fetch('/auth/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ challengeToken, otpCode: code, next })
+    });
+    var data = await res.json();
+    setStep2Loading(false);
+
+    if (!res.ok) {
+      showError('step2Error', data.error || 'Verification failed.');
+      document.getElementById('inputOtp').value = '';
+      document.getElementById('inputOtp').focus();
+      return;
+    }
+
+    window.location.href = data.redirect || '/admin';
+
+  } catch (err) {
+    setStep2Loading(false);
+    showError('step2Error', 'Connection error. Please try again.');
+  }
+}
+
+function goBackToStep1() {
+  document.getElementById('step2').style.display = 'none';
+  document.getElementById('step1').style.display = 'block';
+  document.getElementById('setupSection').style.display = 'none';
+  document.getElementById('inputOtp').value = '';
+  challengeToken = '';
+  showError('step2Error', '');
+}
+
+function copyKey() {
+  var key = document.getElementById('setupKeyCode').textContent;
+  navigator.clipboard.writeText(key).then(function() {
+    var btn = document.querySelector('.btn-copy i');
+    btn.className = 'fa-solid fa-check';
+    setTimeout(function() { btn.className = 'fa-solid fa-copy'; }, 2000);
+  });
+}
+
+// OTP auto-format: add space after 3 digits
+document.getElementById('inputOtp').addEventListener('input', function() {
+  var raw = this.value.replace(/\D/g, '').slice(0, 6);
+  this.value = raw.length > 3 ? raw.slice(0, 3) + ' ' + raw.slice(3) : raw;
+});
+
+// Enter key handling
+document.getElementById('inputName').addEventListener('keypress', function(e) { if (e.key === 'Enter') beginLogin(); });
+document.getElementById('inputEmail').addEventListener('keypress', function(e) { if (e.key === 'Enter') beginLogin(); });
+document.getElementById('inputOtp').addEventListener('keypress', function(e) { if (e.key === 'Enter') verifyLogin(); });
+</script>
+
+</body>
+</html>
