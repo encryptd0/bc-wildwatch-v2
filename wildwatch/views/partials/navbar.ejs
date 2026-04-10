@@ -1,3 +1,4 @@
+<div id="scroll-progress"></div>
 <nav class="navbar" id="navbar">
   <div class="navbar-inner">
     <a href="/home" class="brand-link">
@@ -81,5 +82,37 @@
   links.querySelectorAll('.nav-link').forEach(function(a) {
     if (a.getAttribute('href') === path) a.classList.add('nav-active');
   });
+
+  // Scroll progress bar
+  var bar = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', function() {
+    var scrollTop = window.scrollY;
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
+  }, { passive: true });
+
+  // Ripple effect on all buttons
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('.btn');
+    if (!btn) return;
+    var r = document.createElement('span');
+    r.className = 'ripple';
+    var rect = btn.getBoundingClientRect();
+    var size = Math.max(rect.width, rect.height);
+    r.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + (e.clientX - rect.left - size/2) + 'px;top:' + (e.clientY - rect.top - size/2) + 'px';
+    btn.appendChild(r);
+    r.addEventListener('animationend', function() { r.remove(); });
+  });
+
+  // Scroll reveal observer
+  var ro = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        ro.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(function(el) { ro.observe(el); });
 })();
 </script>

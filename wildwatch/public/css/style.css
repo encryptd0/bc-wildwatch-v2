@@ -2947,3 +2947,169 @@ input, select, textarea, button {
 /* ── Nav link for feed ── */
 .nav-link-feed { font-weight: 600; }
 .nav-link-signin:hover { opacity: .88; transform: translateY(-1px); }
+
+
+/* ================================================================
+   PREMIUM UI ENHANCEMENTS
+   Hover effects, animations, micro-interactions, scroll reveals
+   ================================================================ */
+
+/* Scroll-reveal fade-in */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+.reveal.revealed { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* Ripple effect */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: rippleAnim 0.55s linear;
+  background: rgba(255,255,255,0.28);
+  pointer-events: none;
+}
+@keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
+
+/* Shimmer skeleton */
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-2) 25%, var(--border) 50%, var(--surface-2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--r);
+}
+@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+/* Scroll progress bar */
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--amber), var(--orange));
+  z-index: 9999;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px rgba(245,158,11,.6);
+  border-radius: 0 2px 2px 0;
+}
+
+/* Nav link underline indicator */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 50%; right: 50%;
+  height: 2px;
+  background: var(--amber);
+  border-radius: 2px;
+  transition: left var(--base) var(--ease), right var(--base) var(--ease);
+}
+.nav-link:hover::after, .nav-link.nav-active::after { left: 8px; right: 8px; }
+
+/* Brand icon wiggle */
+.brand-icon { display: inline-block; transition: transform var(--slow) var(--ease); }
+.brand-link:hover .brand-icon { transform: rotate(-8deg) scale(1.12); }
+
+/* Hero content stagger entrance */
+.hero-eyebrow { animation: fadeSlideUp 0.5s cubic-bezier(0.4,0,0.2,1) 0.1s both; }
+.hero-title   { animation: fadeSlideUp 0.6s cubic-bezier(0.4,0,0.2,1) 0.2s both; }
+.hero-tagline { animation: fadeSlideUp 0.5s cubic-bezier(0.4,0,0.2,1) 0.3s both; }
+.hero-desc    { animation: fadeSlideUp 0.5s cubic-bezier(0.4,0,0.2,1) 0.4s both; }
+.hero-actions { animation: fadeSlideUp 0.5s cubic-bezier(0.4,0,0.2,1) 0.5s both; }
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Stats strip entrance */
+.stats-strip-inner { animation: statsSlideUp 0.7s cubic-bezier(0.4,0,0.2,1) 0.2s both; }
+@keyframes statsSlideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Stat cell hover */
+.stat-cell { transition: background var(--base) var(--ease); cursor: default; }
+.stat-cell:hover { background: rgba(245,158,11,.04); }
+.stat-num { transition: color var(--slow) var(--ease), transform var(--slow) var(--ease); }
+.stat-cell:hover .stat-num { color: var(--amber); transform: scale(1.08); }
+
+/* Feature cards glow */
+.feature-card:hover {
+  box-shadow: 0 20px 40px rgba(0,0,0,.09), 0 4px 12px rgba(0,0,0,.06),
+    0 0 0 1px rgba(245,158,11,.15), 0 0 30px rgba(245,158,11,.06);
+}
+
+/* Animal card colored glow on hover */
+.animal-card:hover { transform: translateY(-6px); }
+.animal-card.animal-danger:hover  { box-shadow: 0 16px 32px rgba(239,68,68,.14),  0 4px 8px rgba(0,0,0,.06); }
+.animal-card.animal-warning:hover { box-shadow: 0 16px 32px rgba(245,158,11,.14), 0 4px 8px rgba(0,0,0,.06); }
+.animal-card.animal-info:hover    { box-shadow: 0 16px 32px rgba(59,130,246,.14), 0 4px 8px rgba(0,0,0,.06); }
+
+/* Feed items - left accent bar */
+.feed-item { position: relative; overflow: hidden; }
+.feed-item::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: linear-gradient(to bottom, var(--amber), var(--orange));
+  transform: scaleY(0); transform-origin: bottom;
+  transition: transform var(--base) var(--ease);
+  border-radius: 0 2px 2px 0;
+}
+.feed-item:hover::before { transform: scaleY(1); }
+.feed-item:hover {
+  border-color: rgba(245,158,11,.25);
+  box-shadow: 0 6px 20px rgba(0,0,0,.08), 0 0 0 1px rgba(245,158,11,.1);
+  transform: translateX(5px);
+}
+
+/* Report card lift */
+.report-card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0,0,0,.09); border-color: var(--sky); }
+
+/* Button shine sweep */
+.btn-primary::before, .btn-amber::before, .btn-sky::before {
+  content: '';
+  position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,.18), transparent);
+  transition: left 0.5s cubic-bezier(0.4,0,0.2,1);
+  pointer-events: none;
+}
+.btn-primary:hover::before, .btn-amber:hover::before, .btn-sky:hover::before { left: 150%; }
+.btn-amber:hover { box-shadow: 0 8px 24px rgba(245,158,11,.50); transform: translateY(-3px); }
+
+/* Chatbot send button */
+.send-btn:not(:disabled):hover {
+  background: var(--sky);
+  box-shadow: 0 0 0 4px rgba(59,130,246,.2);
+  transform: scale(1.1);
+}
+
+/* Tooltip */
+[data-tip] { position: relative; }
+[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px); left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--heading); color: var(--white);
+  font-size: 0.72rem; font-weight: 600;
+  padding: 0.3rem 0.65rem; border-radius: var(--r-sm);
+  white-space: nowrap; opacity: 0; pointer-events: none;
+  transition: opacity var(--fast) var(--ease), transform var(--fast) var(--ease);
+  z-index: 100;
+}
+[data-tip]:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Badge hover scale */
+.badge:hover, .status-badge:hover, .severity-badge:hover {
+  transform: scale(1.06);
+  box-shadow: 0 2px 8px rgba(0,0,0,.1);
+  cursor: default;
+}
