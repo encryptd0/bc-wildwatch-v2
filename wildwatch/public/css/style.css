@@ -3157,6 +3157,57 @@ input, select, textarea, button {
   color: var(--navy);
 }
 
+.heatmap-tabs {
+  display: inline-flex;
+  gap: 0;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 4px;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 2px 8px rgba(15,36,80,0.07);
+}
+
+.heatmap-tab {
+  position: relative;
+  padding: 0.55rem 1.4rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-light);
+  background: transparent;
+  border: none;
+  border-radius: calc(var(--r-lg) - 4px);
+  cursor: pointer;
+  transition: color 0.2s cubic-bezier(0.4,0,0.2,1),
+              background 0.2s cubic-bezier(0.4,0,0.2,1),
+              box-shadow 0.2s cubic-bezier(0.4,0,0.2,1);
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+
+.heatmap-tab:hover:not(.active) {
+  color: var(--navy);
+  background: var(--surface-2);
+}
+
+.heatmap-tab.active {
+  color: var(--white);
+  background: var(--navy);
+  box-shadow: 0 2px 10px rgba(15,36,80,0.22), 0 1px 3px rgba(15,36,80,0.15);
+}
+
+.heatmap-tab.active::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+  margin-right: 6px;
+  vertical-align: middle;
+  margin-top: -2px;
+}
+
 .heatmap-layout {
   display: grid;
   grid-template-columns: 1fr 280px;
