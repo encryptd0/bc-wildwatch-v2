@@ -71,65 +71,100 @@
       </select>
       <select id="adminFilterLocation" onchange="loadIncidents()">
         <option value="">All Locations</option>
-        <optgroup label="Classrooms">
+        <optgroup label="Main Campus: Classrooms">
           <option value="Classroom Alpha">Classroom Alpha</option>
           <option value="Classroom Beta">Classroom Beta</option>
           <option value="Classroom Delta">Classroom Delta</option>
-          <option value="Classroom Theta">Classroom Theta</option>
-          <option value="Classroom Eta">Classroom Eta</option>
-          <option value="Classroom Tau">Classroom Tau</option>
           <option value="Classroom Gamma">Classroom Gamma</option>
-          <option value="Classroom Sigma">Classroom Sigma</option>
-          <option value="Classroom Omega">Classroom Omega</option>
-          <option value="Classroom Upsilon">Classroom Upsilon</option>
-          <option value="Classroom Pi">Classroom Pi</option>
-          <option value="Classroom Rho">Classroom Rho</option>
           <option value="Classroom Lambda">Classroom Lambda</option>
-          <option value="Classroom Omikron">Classroom Omikron</option>
+          <option value="Classroom Omega">Classroom Omega</option>
+          <option value="Classroom Omnikron">Classroom Omnikron</option>
+          <option value="Classroom Pi">Classroom Pi</option>
+          <option value="Classroom Roh">Classroom Roh</option>
+          <option value="Classroom Sigma">Classroom Sigma</option>
+          <option value="Classroom Theta">Classroom Theta</option>
+          <option value="Classroom Ypsilon">Classroom Ypsilon</option>
+          <option value="Classroom Zeta">Classroom Zeta</option>
         </optgroup>
-        <optgroup label="Residences">
+        <optgroup label="Main Campus: Residences">
           <option value="Residence Antwerp">Residence Antwerp</option>
           <option value="Residence Brussels">Residence Brussels</option>
-          <option value="Residence Diepenbeek">Residence Diepenbeek</option>
+          <option value="Residence Eeklo">Residence Eeklo</option>
           <option value="Residence Genk">Residence Genk</option>
           <option value="Residence Hasselt">Residence Hasselt</option>
-          <option value="Residence Kortrijk">Residence Kortrijk</option>
           <option value="Residence Leuven">Residence Leuven</option>
+        </optgroup>
+        <optgroup label="Main Campus: Buildings">
+          <option value="Administrations">Administrations</option>
+          <option value="Boardroom">Boardroom</option>
+          <option value="CLC Office">CLC Office</option>
+          <option value="Counsel Offices">Counsel Offices</option>
+          <option value="Cottage">Cottage</option>
+          <option value="Finance">Finance</option>
+          <option value="Lecturers">Lecturers</option>
+          <option value="Library">Library</option>
+          <option value="Reception">Reception</option>
+          <option value="Sales">Sales</option>
+          <option value="Staff Room">Staff Room</option>
+          <option value="Tuck Shop">Tuck Shop</option>
+          <option value="Virtual Room">Virtual Room</option>
+        </optgroup>
+        <optgroup label="Main Campus: Outdoor">
+          <option value="Basketball Court">Basketball Court</option>
+          <option value="Chess Area">Chess Area</option>
+          <option value="Main Gate">Main Gate</option>
+          <option value="Staff Parking">Staff Parking</option>
+          <option value="Visitors Parking">Visitors Parking</option>
+        </optgroup>
+        <optgroup label="North Campus: Classrooms">
+          <option value="Classroom Chi">Classroom Chi</option>
+          <option value="Classroom Iota">Classroom Iota</option>
+          <option value="Classroom Kappa 1">Classroom Kappa 1</option>
+          <option value="Classroom Kappa 2">Classroom Kappa 2</option>
+          <option value="Classroom Phi">Classroom Phi</option>
+          <option value="Classroom Psi">Classroom Psi</option>
+        </optgroup>
+        <optgroup label="North Campus: Residences">
+          <option value="Residence Diepenbeek">Residence Diepenbeek</option>
+          <option value="Residence Dinant">Residence Dinant</option>
+          <option value="Residence Lier">Residence Lier</option>
+          <option value="Residence Liege">Residence Liege</option>
           <option value="Residence Mechelen">Residence Mechelen</option>
           <option value="Residence Namur">Residence Namur</option>
           <option value="Residence Oostende">Residence Oostende</option>
           <option value="Residence Tienen">Residence Tienen</option>
+          <option value="Residence Turnhout">Residence Turnhout</option>
         </optgroup>
-        <optgroup label="Main Facilities">
-          <option value="Administration Office">Administration Office</option>
-          <option value="Boardroom">Boardroom</option>
-          <option value="Gunsel Offices">Gunsel Offices</option>
-          <option value="Lecturers">Lecturers</option>
-          <option value="Library">Library</option>
-          <option value="Marketing">Marketing</option>
-          <option value="Printing">Printing</option>
-          <option value="Server Room / Kappa">Server Room / Kappa</option>
-          <option value="Virtual Room">Virtual Room</option>
-        </optgroup>
-        <optgroup label="Dining &amp; Social">
-          <option value="Botlhale Village">Botlhale Village</option>
+        <optgroup label="North Campus: Buildings">
           <option value="Cafeteria">Cafeteria</option>
-          <option value="Tuck Shop">Tuck Shop</option>
+          <option value="IT Department">IT Department</option>
+          <option value="Laundry">Laundry</option>
+          <option value="Learning Factory">Learning Factory</option>
+          <option value="Procurement">Procurement</option>
+          <option value="Smart Cities">Smart Cities</option>
         </optgroup>
-        <optgroup label="Parking">
-          <option value="Directors Parking">Directors Parking</option>
-          <option value="Staff Parking">Staff Parking</option>
-          <option value="Student Parking">Student Parking</option>
-          <option value="Visitor Parking">Visitor Parking</option>
-        </optgroup>
-        <optgroup label="Recreational">
-          <option value="Basketball Court">Basketball Court</option>
-          <option value="Chess Area">Chess Area</option>
+        <optgroup label="North Campus: Outdoor">
           <option value="Sports Fields">Sports Fields</option>
+          <option value="Student Parking">Student Parking</option>
+        </optgroup>
+        <optgroup label="West Campus: Residences">
+          <option value="Residence Brugge">Residence Brugge</option>
+          <option value="Residence Brugge Flat">Residence Brugge Flat</option>
+          <option value="Residence Menen">Residence Menen</option>
+          <option value="Residence West House 1">Residence West House 1</option>
+          <option value="Residence West House 2">Residence West House 2</option>
+          <option value="Staff Residences">Staff Residences</option>
+        </optgroup>
+        <optgroup label="West Campus: Buildings">
+          <option value="Gym &amp; Study Room">Gym &amp; Study Room</option>
+          <option value="Security">Security</option>
+          <option value="Storeroom">Storeroom</option>
+        </optgroup>
+        <optgroup label="West Campus: Outdoor">
+          <option value="Garden">Garden</option>
+          <option value="Pool">Pool</option>
         </optgroup>
         <optgroup label="Other">
-          <option value="Aeronautical Centre">Aeronautical Centre</option>
-          <option value="Main Gate">Main Gate</option>
           <option value="Other">Other</option>
         </optgroup>
       </select>

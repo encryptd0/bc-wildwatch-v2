@@ -4,16 +4,24 @@ const Incident = require('./models/Incident');
 
 const animals = ['Snake', 'Bees/Wasps', 'Ants', 'Lizard', 'Cockroaches', 'Stray Dog', 'Stray Cat', 'Spider', 'Rat/Mouse', 'Other'];
 const locations = [
-  'Classroom Alpha','Classroom Beta','Classroom Delta','Classroom Theta','Classroom Eta','Classroom Tau',
-  'Classroom Gamma','Classroom Sigma','Classroom Omega','Classroom Upsilon','Classroom Pi','Classroom Rho',
-  'Classroom Lambda','Classroom Omikron',
-  'Residence Antwerp','Residence Hasselt','Residence Brussels','Residence Leuven','Residence Genk',
-  'Residence Diepenbeek','Residence Mechelen','Residence Namur','Residence Kortrijk','Residence Tienen','Residence Oostende',
-  'Library','Administration Office','Boardroom','Marketing','Virtual Room','Lecturers','Printing','Server Room / Kappa','Gunsel Offices',
-  'Tuck Shop','Cafeteria','Botlhale Village',
-  'Directors Parking','Staff Parking','Visitor Parking','Student Parking',
-  'Basketball Court','Chess Area','Sports Fields',
-  'Aeronautical Centre','Main Gate'
+  // Main Campus
+  'Classroom Alpha','Classroom Beta','Classroom Delta','Classroom Gamma','Classroom Lambda',
+  'Classroom Omega','Classroom Omnikron','Classroom Pi','Classroom Roh','Classroom Sigma',
+  'Classroom Theta','Classroom Ypsilon','Classroom Zeta',
+  'Residence Antwerp','Residence Brussels','Residence Eeklo','Residence Genk','Residence Hasselt','Residence Leuven',
+  'Library','Virtual Room','Lecturers','Cottage','Reception','Boardroom','Sales','Finance',
+  'Administrations','CLC Office','Staff Room','Counsel Offices','Tuck Shop',
+  'Chess Area','Basketball Court','Staff Parking','Visitors Parking','Main Gate',
+  // North Campus
+  'Classroom Chi','Classroom Iota','Classroom Kappa 1','Classroom Kappa 2','Classroom Phi','Classroom Psi',
+  'Residence Diepenbeek','Residence Dinant','Residence Lier','Residence Liege',
+  'Residence Mechelen','Residence Namur','Residence Oostende','Residence Tienen','Residence Turnhout',
+  'IT Department','Procurement','Smart Cities','Learning Factory','Cafeteria','Laundry',
+  'Student Parking','Sports Fields',
+  // West Campus
+  'Residence Brugge','Residence Brugge Flat','Residence Menen',
+  'Residence West House 1','Residence West House 2','Staff Residences',
+  'Gym & Study Room','Security','Storeroom','Garden','Pool'
 ];
 const severities = ['Low', 'Medium', 'High', 'Critical'];
 const statuses = ['Pending', 'Reviewed', 'In Progress', 'Resolved'];

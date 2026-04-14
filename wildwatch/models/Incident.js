@@ -32,28 +32,40 @@ const incidentSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: [
-      // Classrooms
+      // ── MAIN CAMPUS — Classrooms ──
       'Classroom Alpha','Classroom Beta','Classroom Delta','Classroom Theta',
-      'Classroom Eta','Classroom Tau','Classroom Gamma','Classroom Sigma',
-      'Classroom Omega','Classroom Upsilon','Classroom Pi','Classroom Rho',
-      'Classroom Lambda','Classroom Omikron',
-      // Residences (Upper)
+      'Classroom Zeta','Classroom Gamma','Classroom Omega','Classroom Ypsilon',
+      'Classroom Sigma','Classroom Pi','Classroom Roh','Classroom Lambda','Classroom Omnikron',
+      // ── MAIN CAMPUS — Residences ──
       'Residence Antwerp','Residence Hasselt','Residence Brussels',
-      'Residence Leuven','Residence Genk',
-      // Residences (Lower)
-      'Residence Diepenbeek','Residence Mechelen','Residence Namur',
-      'Residence Kortrijk','Residence Tienen','Residence Oostende',
-      // Main Facilities
-      'Library','Administration Office','Boardroom','Marketing',
-      'Virtual Room','Lecturers','Printing','Server Room / Kappa','Gunsel Offices',
-      // Dining & Social
-      'Tuck Shop','Cafeteria','Botlhale Village',
-      // Parking
-      'Directors Parking','Staff Parking','Visitor Parking','Student Parking',
-      // Recreational
-      'Basketball Court','Chess Area','Sports Fields',
-      // Other
-      'Aeronautical Centre','Main Gate','Other'
+      'Residence Leuven','Residence Genk','Residence Eeklo',
+      // ── MAIN CAMPUS — Buildings ──
+      'Library','Virtual Room','Lecturers','Cottage','Reception',
+      'Boardroom','Sales','Finance','Administrations',
+      'CLC Office','Staff Room','Counsel Offices','Tuck Shop',
+      // ── MAIN CAMPUS — Outdoor ──
+      'Chess Area','Basketball Court','Staff Parking','Visitors Parking','Main Gate',
+      // ── NORTH CAMPUS — Classrooms ──
+      'Classroom Kappa 1','Classroom Kappa 2','Classroom Chi',
+      'Classroom Phi','Classroom Iota','Classroom Psi',
+      // ── NORTH CAMPUS — Residences ──
+      'Residence Dinant','Residence Mechelen','Residence Namur',
+      'Residence Tienen','Residence Turnhout','Residence Lier',
+      'Residence Liege','Residence Diepenbeek','Residence Oostende',
+      // ── NORTH CAMPUS — Buildings ──
+      'IT Department','Procurement','Smart Cities','Learning Factory',
+      'Cafeteria','Laundry',
+      // ── NORTH CAMPUS — Outdoor ──
+      'Student Parking','Sports Fields',
+      // ── WEST CAMPUS — Residences ──
+      'Residence West House 1','Residence West House 2','Residence Menen',
+      'Residence Brugge','Residence Brugge Flat','Staff Residences',
+      // ── WEST CAMPUS — Buildings ──
+      'Gym & Study Room','Security','Storeroom',
+      // ── WEST CAMPUS — Outdoor ──
+      'Garden','Pool',
+      // ── OTHER ──
+      'Other'
     ]
   },
   description: {
