@@ -31,7 +31,30 @@ const incidentSchema = new mongoose.Schema({
   location: {
     type: String,
     required: true,
-    enum: ['Main Building', 'Library', 'Cafeteria', 'Parking Lot', 'Sports Fields', 'Residence', 'IT Labs', 'Admin Block', 'Garden Area', 'Other']
+    enum: [
+      // Classrooms
+      'Classroom Alpha','Classroom Beta','Classroom Delta','Classroom Theta',
+      'Classroom Eta','Classroom Tau','Classroom Gamma','Classroom Sigma',
+      'Classroom Omega','Classroom Upsilon','Classroom Pi','Classroom Rho',
+      'Classroom Lambda','Classroom Omikron',
+      // Residences (Upper)
+      'Residence Antwerp','Residence Hasselt','Residence Brussels',
+      'Residence Leuven','Residence Genk',
+      // Residences (Lower)
+      'Residence Diepenbeek','Residence Mechelen','Residence Namur',
+      'Residence Kortrijk','Residence Tienen','Residence Oostende',
+      // Main Facilities
+      'Library','Administration Office','Boardroom','Marketing',
+      'Virtual Room','Lecturers','Printing','Server Room / Kappa','Gunsel Offices',
+      // Dining & Social
+      'Tuck Shop','Cafeteria','Botlhale Village',
+      // Parking
+      'Directors Parking','Staff Parking','Visitor Parking','Student Parking',
+      // Recreational
+      'Basketball Court','Chess Area','Sports Fields',
+      // Other
+      'Aeronautical Centre','Main Gate','Other'
+    ]
   },
   description: {
     type: String,

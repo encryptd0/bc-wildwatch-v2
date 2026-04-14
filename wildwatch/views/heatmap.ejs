@@ -1,0 +1,389 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<main class="page-main">
+  <div class="heatmap-page-wrap">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="section-label"><i class="fa-solid fa-map-location-dot"></i> Live Data</div>
+      <h1>Campus Incident Heatmap</h1>
+      <p>Real-time overlay of reported animal sightings across Belgium Campus Tshwane. Zones light up based on incident volume and severity.</p>
+    </div>
+
+    <!-- Legend -->
+    <div class="heatmap-legend">
+      <div class="legend-item"><span class="legend-dot" style="background:#10B981"></span> Low</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#F59E0B"></span> Medium</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#F97316"></span> High</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#EF4444"></span> Critical</div>
+      <div class="legend-item"><span class="legend-dot legend-dot-empty"></span> No Reports</div>
+      <div class="heatmap-legend-count" id="heatmapTotal">Loading...</div>
+    </div>
+
+    <!-- Layout: Map + Sidebar -->
+    <div class="heatmap-layout">
+
+      <!-- SVG Map -->
+      <div class="heatmap-wrap">
+        <svg class="heatmap-svg" viewBox="0 0 900 720" xmlns="http://www.w3.org/2000/svg">
+
+          <!-- ══ UPPER CAMPUS ══ -->
+          <rect x="10" y="10" width="870" height="440" rx="4" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+          <text x="20" y="26" class="map-campus-label">UPPER CAMPUS</text>
+
+          <!-- Road divider -->
+          <rect x="10" y="455" width="870" height="14" rx="2" fill="#e2e8f0"/>
+          <text x="420" y="466" class="map-road-label">MAIN ROAD</text>
+
+          <!-- ══ LOWER CAMPUS ══ -->
+          <rect x="10" y="474" width="870" height="236" rx="4" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+          <text x="20" y="490" class="map-campus-label">LOWER CAMPUS</text>
+
+          <!-- ───── TOP ROW: Residences (upper-left) ───── -->
+          <g class="map-zone" data-location="Residence Antwerp">
+            <rect x="20" y="32" width="80" height="38"/>
+            <text x="60" y="55">Res. Antwerp</text>
+            <circle class="heat-dot" cx="60" cy="51" r="0"/>
+          </g>
+          <g class="map-zone" data-location="Residence Hasselt">
+            <rect x="108" y="32" width="80" height="38"/>
+            <text x="148" y="55">Res. Hasselt</text>
+            <circle class="heat-dot" cx="148" cy="51" r="0"/>
+          </g>
+
+          <!-- Classroom Beta -->
+          <g class="map-zone" data-location="Classroom Beta">
+            <rect x="230" y="32" width="78" height="38"/>
+            <text x="269" y="55">Class. Beta</text>
+            <circle class="heat-dot" cx="269" cy="51" r="0"/>
+          </g>
+
+          <!-- Library -->
+          <g class="map-zone" data-location="Library">
+            <rect x="460" y="32" width="100" height="50"/>
+            <text x="510" y="61">Library</text>
+            <circle class="heat-dot" cx="510" cy="57" r="0"/>
+          </g>
+
+          <!-- Admin Office -->
+          <g class="map-zone" data-location="Administration Office">
+            <rect x="568" y="32" width="100" height="38"/>
+            <text x="618" y="55">Admin Office</text>
+            <circle class="heat-dot" cx="618" cy="51" r="0"/>
+          </g>
+
+          <!-- Marketing -->
+          <g class="map-zone" data-location="Marketing">
+            <rect x="676" y="32" width="80" height="38"/>
+            <text x="716" y="55">Marketing</text>
+            <circle class="heat-dot" cx="716" cy="51" r="0"/>
+          </g>
+
+          <!-- ───── ROW 2 ───── -->
+          <!-- Classroom Alpha -->
+          <g class="map-zone" data-location="Classroom Alpha">
+            <rect x="20" y="78" width="80" height="38"/>
+            <text x="60" y="101">Class. Alpha</text>
+            <circle class="heat-dot" cx="60" cy="97" r="0"/>
+          </g>
+
+          <!-- Virtual Room -->
+          <g class="map-zone" data-location="Virtual Room">
+            <rect x="230" y="78" width="78" height="38"/>
+            <text x="269" y="101">Virtual Room</text>
+            <circle class="heat-dot" cx="269" cy="97" r="0"/>
+          </g>
+
+          <!-- Lecturers -->
+          <g class="map-zone" data-location="Lecturers">
+            <rect x="316" y="78" width="78" height="38"/>
+            <text x="355" y="101">Lecturers</text>
+            <circle class="heat-dot" cx="355" cy="97" r="0"/>
+          </g>
+
+          <!-- Boardroom -->
+          <g class="map-zone" data-location="Boardroom">
+            <rect x="568" y="78" width="80" height="38"/>
+            <text x="608" y="101">Boardroom</text>
+            <circle class="heat-dot" cx="608" cy="97" r="0"/>
+          </g>
+
+          <!-- ───── ROW 3 ───── -->
+          <!-- Classroom Delta -->
+          <g class="map-zone" data-location="Classroom Delta">
+            <rect x="108" y="124" width="80" height="38"/>
+            <text x="148" y="147">Class. Delta</text>
+            <circle class="heat-dot" cx="148" cy="143" r="0"/>
+          </g>
+
+          <!-- Classroom Theta -->
+          <g class="map-zone" data-location="Classroom Theta">
+            <rect x="20" y="124" width="80" height="38"/>
+            <text x="60" y="147">Class. Theta</text>
+            <circle class="heat-dot" cx="60" cy="143" r="0"/>
+          </g>
+
+          <!-- Printing -->
+          <g class="map-zone" data-location="Printing">
+            <rect x="316" y="124" width="78" height="38"/>
+            <text x="355" y="147">Printing</text>
+            <circle class="heat-dot" cx="355" cy="143" r="0"/>
+          </g>
+
+          <!-- Directors Parking -->
+          <g class="map-zone" data-location="Directors Parking">
+            <rect x="680" y="80" width="100" height="80"/>
+            <text x="730" y="124">Directors</text>
+            <text x="730" y="136" class="map-text-sub">Parking</text>
+            <circle class="heat-dot" cx="730" cy="120" r="0"/>
+          </g>
+
+          <!-- Classroom Lambda -->
+          <g class="map-zone" data-location="Classroom Lambda">
+            <rect x="460" y="124" width="78" height="38"/>
+            <text x="499" y="147">Class. Lambda</text>
+            <circle class="heat-dot" cx="499" cy="143" r="0"/>
+          </g>
+
+          <!-- Classroom Omikron -->
+          <g class="map-zone" data-location="Classroom Omikron">
+            <rect x="546" y="124" width="80" height="38"/>
+            <text x="586" y="147">Class. Omikron</text>
+            <circle class="heat-dot" cx="586" cy="143" r="0"/>
+          </g>
+
+          <!-- ───── ROW 4: Residence Brussels + Classrooms ───── -->
+          <g class="map-zone" data-location="Residence Brussels">
+            <rect x="20" y="170" width="80" height="50"/>
+            <text x="60" y="199">Res. Brussels</text>
+            <circle class="heat-dot" cx="60" cy="195" r="0"/>
+          </g>
+
+          <!-- Classroom Gamma -->
+          <g class="map-zone" data-location="Classroom Gamma">
+            <rect x="108" y="170" width="80" height="38"/>
+            <text x="148" y="193">Class. Gamma</text>
+            <circle class="heat-dot" cx="148" cy="189" r="0"/>
+          </g>
+
+          <!-- Visitor + Staff Parking (upper right) -->
+          <g class="map-zone" data-location="Visitor Parking">
+            <rect x="680" y="168" width="100" height="46"/>
+            <text x="730" y="195">Visitor Parking</text>
+            <circle class="heat-dot" cx="730" cy="191" r="0"/>
+          </g>
+          <g class="map-zone" data-location="Staff Parking">
+            <rect x="680" y="222" width="100" height="46"/>
+            <text x="730" y="249">Staff Parking</text>
+            <circle class="heat-dot" cx="730" cy="245" r="0"/>
+          </g>
+
+          <!-- ───── CENTRE: Basketball + Chess + Residence Leuven/Genk ───── -->
+          <!-- Residence Leuven -->
+          <g class="map-zone" data-location="Residence Leuven">
+            <rect x="316" y="170" width="100" height="60"/>
+            <text x="366" y="204">Res. Leuven</text>
+            <circle class="heat-dot" cx="366" cy="200" r="0"/>
+          </g>
+
+          <!-- Basketball Court -->
+          <g class="map-zone" data-location="Basketball Court">
+            <rect x="424" y="170" width="90" height="50"/>
+            <text x="469" y="199">Basketball</text>
+            <circle class="heat-dot" cx="469" cy="195" r="0"/>
+          </g>
+
+          <!-- Chess Area -->
+          <g class="map-zone" data-location="Chess Area">
+            <rect x="230" y="170" width="78" height="50"/>
+            <text x="269" y="199">Chess Area</text>
+            <circle class="heat-dot" cx="269" cy="195" r="0"/>
+          </g>
+
+          <!-- Classroom Eta -->
+          <g class="map-zone" data-location="Classroom Eta">
+            <rect x="316" y="238" width="78" height="38"/>
+            <text x="355" y="261">Class. Eta</text>
+            <circle class="heat-dot" cx="355" cy="257" r="0"/>
+          </g>
+
+          <!-- Residence Genk -->
+          <g class="map-zone" data-location="Residence Genk">
+            <rect x="460" y="228" width="100" height="50"/>
+            <text x="510" y="257">Res. Genk</text>
+            <circle class="heat-dot" cx="510" cy="253" r="0"/>
+          </g>
+
+          <!-- Classroom Tau -->
+          <g class="map-zone" data-location="Classroom Tau">
+            <rect x="316" y="284" width="78" height="38"/>
+            <text x="355" y="307">Class. Tau</text>
+            <circle class="heat-dot" cx="355" cy="303" r="0"/>
+          </g>
+
+          <!-- ───── ROW 5: Server Room, Pi, Rho + Tuck Shop ───── -->
+          <g class="map-zone" data-location="Classroom Rho">
+            <rect x="20" y="280" width="78" height="38"/>
+            <text x="59" y="303">Class. Rho</text>
+            <circle class="heat-dot" cx="59" cy="299" r="0"/>
+          </g>
+          <g class="map-zone" data-location="Classroom Pi">
+            <rect x="20" y="326" width="78" height="38"/>
+            <text x="59" y="349">Class. Pi</text>
+            <circle class="heat-dot" cx="59" cy="345" r="0"/>
+          </g>
+          <g class="map-zone" data-location="Server Room / Kappa">
+            <rect x="20" y="372" width="78" height="40"/>
+            <text x="59" y="389">Server Room</text>
+            <text x="59" y="401" class="map-text-sub">/ Kappa</text>
+            <circle class="heat-dot" cx="59" cy="391" r="0"/>
+          </g>
+
+          <!-- Tuck Shop -->
+          <g class="map-zone" data-location="Tuck Shop">
+            <rect x="424" y="330" width="80" height="60"/>
+            <text x="464" y="364">Tuck Shop</text>
+            <circle class="heat-dot" cx="464" cy="360" r="0"/>
+          </g>
+
+          <!-- Classroom Sigma -->
+          <g class="map-zone" data-location="Classroom Sigma">
+            <rect x="196" y="360" width="80" height="38"/>
+            <text x="236" y="383">Class. Sigma</text>
+            <circle class="heat-dot" cx="236" cy="379" r="0"/>
+          </g>
+
+          <!-- Gunsel Offices -->
+          <g class="map-zone" data-location="Gunsel Offices">
+            <rect x="284" y="360" width="78" height="38"/>
+            <text x="323" y="383">Gunsel Offices</text>
+            <circle class="heat-dot" cx="323" cy="379" r="0"/>
+          </g>
+
+          <!-- Classroom Omega -->
+          <g class="map-zone" data-location="Classroom Omega">
+            <rect x="196" y="406" width="80" height="38"/>
+            <text x="236" y="429">Class. Omega</text>
+            <circle class="heat-dot" cx="236" cy="425" r="0"/>
+          </g>
+
+          <!-- Classroom Upsilon -->
+          <g class="map-zone" data-location="Classroom Upsilon">
+            <rect x="284" y="406" width="78" height="38"/>
+            <text x="323" y="429">Class. Upsilon</text>
+            <circle class="heat-dot" cx="323" cy="425" r="0"/>
+          </g>
+
+          <!-- Lecturers (lower row) -->
+          <g class="map-zone" data-location="Printing">
+            <!-- already placed above, skip duplicate -->
+          </g>
+
+          <!-- Virtual Room lower -->
+          <!-- already placed -->
+
+          <!-- ══ LOWER CAMPUS ZONES ══ -->
+
+          <!-- Student Parking -->
+          <g class="map-zone" data-location="Student Parking">
+            <rect x="20" y="490" width="200" height="80"/>
+            <text x="120" y="534">Student Parking</text>
+            <circle class="heat-dot" cx="120" cy="530" r="0"/>
+          </g>
+
+          <!-- Sports Fields -->
+          <g class="map-zone" data-location="Sports Fields">
+            <rect x="20" y="578" width="200" height="120"/>
+            <text x="120" y="642">Sports Fields</text>
+            <circle class="heat-dot" cx="120" cy="638" r="0"/>
+          </g>
+
+          <!-- Residence Diepenbeek (far left lower) -->
+          <g class="map-zone" data-location="Residence Diepenbeek">
+            <rect x="230" y="578" width="80" height="60"/>
+            <text x="270" y="612">Res.</text>
+            <text x="270" y="624" class="map-text-sub">Diepenbeek</text>
+            <circle class="heat-dot" cx="270" cy="611" r="0"/>
+          </g>
+
+          <!-- Main Gate -->
+          <g class="map-zone" data-location="Main Gate">
+            <rect x="390" y="490" width="80" height="36"/>
+            <text x="430" y="513">Main Gate</text>
+            <circle class="heat-dot" cx="430" cy="508" r="0"/>
+          </g>
+
+          <!-- Residences cluster lower-right -->
+          <g class="map-zone" data-location="Residence Mechelen">
+            <rect x="500" y="490" width="90" height="38"/>
+            <text x="545" y="513">Res. Mechelen</text>
+            <circle class="heat-dot" cx="545" cy="509" r="0"/>
+          </g>
+          <g class="map-zone" data-location="Residence Namur">
+            <rect x="598" y="490" width="80" height="38"/>
+            <text x="638" y="513">Res. Namur</text>
+            <circle class="heat-dot" cx="638" cy="509" r="0"/>
+          </g>
+          <g class="map-zone" data-location="Residence Kortrijk">
+            <rect x="500" y="536" width="90" height="38"/>
+            <text x="545" y="559">Res. Kortrijk</text>
+            <circle class="heat-dot" cx="545" cy="555" r="0"/>
+          </g>
+          <g class="map-zone" data-location="Residence Tienen">
+            <rect x="598" y="536" width="80" height="38"/>
+            <text x="638" y="559">Res. Tienen</text>
+            <circle class="heat-dot" cx="638" cy="555" r="0"/>
+          </g>
+          <g class="map-zone" data-location="Residence Oostende">
+            <rect x="500" y="582" width="90" height="38"/>
+            <text x="545" y="605">Res. Oostende</text>
+            <circle class="heat-dot" cx="545" cy="601" r="0"/>
+          </g>
+
+          <!-- Botlhale Village -->
+          <g class="map-zone" data-location="Botlhale Village">
+            <rect x="696" y="490" width="90" height="60"/>
+            <text x="741" y="524">Botlhale</text>
+            <text x="741" y="536" class="map-text-sub">Village</text>
+            <circle class="heat-dot" cx="741" cy="520" r="0"/>
+          </g>
+
+          <!-- Cafeteria -->
+          <g class="map-zone" data-location="Cafeteria">
+            <rect x="696" y="558" width="90" height="60"/>
+            <text x="741" y="592">Cafeteria</text>
+            <circle class="heat-dot" cx="741" cy="588" r="0"/>
+          </g>
+
+          <!-- Aeronautical Centre -->
+          <g class="map-zone" data-location="Aeronautical Centre">
+            <rect x="598" y="622" width="180" height="78"/>
+            <text x="688" y="665">Aeronautical Centre</text>
+            <circle class="heat-dot" cx="688" cy="661" r="0"/>
+          </g>
+
+          <!-- Belgium Campus Logo area label -->
+          <text x="795" y="250" class="map-brand-label" transform="rotate(90,795,250)">BELGIUM CAMPUS TSHWANE</text>
+
+        </svg>
+        <!-- Tooltip -->
+        <div class="heatmap-tooltip" id="heatmapTooltip" style="display:none;"></div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="heatmap-sidebar" id="heatmapSidebar">
+        <div class="heatmap-sidebar-header">
+          <i class="fa-solid fa-fire"></i> Hotspots
+        </div>
+        <div id="heatmapSidebarList">
+          <div class="heatmap-sidebar-loading">Loading data...</div>
+        </div>
+      </div>
+
+    </div><!-- /.heatmap-layout -->
+  </div><!-- /.heatmap-page-wrap -->
+</main>
+
+<%- include('partials/footer') %>
+<script src="/js/heatmap.js"></script>

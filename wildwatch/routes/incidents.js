@@ -31,6 +31,8 @@ const { requireAuth } = require('../middleware/auth');
 router.get('/home', controller.homePage);
 router.get('/report', requireAuth, controller.reportPage);
 router.get('/my-reports', requireAuth, controller.myReportsPage);
+router.get('/heatmap', controller.heatmapPage);
+router.get('/heatmap/data', controller.heatmapData);
 
 router.post('/incidents/submit', upload.single('photo'), controller.submitIncident);
 router.get('/incidents/my-reports', controller.getMyReports);

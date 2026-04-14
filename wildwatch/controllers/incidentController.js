@@ -128,6 +128,30 @@ exports.getFeed = async (req, res) => {
   }
 };
 
+exports.heatmapPage = (req, res) => {
+  res.render('heatmap', { title: 'Campus Incident Heatmap - BC WildWatch' });
+};
+
+exports.heatmapData = async (req, res) => {
+  try {
+    await connectDB();
+    const data = await Incident.aggregate([
+      { $group: {
+        _id: '$location',
+        total:    { $sum: 1 },
+        critical: { $sum: { $cond: [{ $eq: ['$severity', 'Critical'] }, 1, 0] } },
+        high:     { $sum: { $cond: [{ $eq: ['$severity', 'High'] }, 1, 0] } },
+        medium:   { $sum: { $cond: [{ $eq: ['$severity', 'Medium'] }, 1, 0] } },
+        low:      { $sum: { $cond: [{ $eq: ['$severity', 'Low'] }, 1, 0] } }
+      }},
+      { $sort: { total: -1 } }
+    ]);
+    res.json({ success: true, data: data.map(d => ({ location: d._id, total: d.total, critical: d.critical, high: d.high, medium: d.medium, low: d.low })) });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Server error' });
+  }
+};
+
 exports.getStats = async (req, res) => {
   try {
     await connectDB();

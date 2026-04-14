@@ -3,7 +3,18 @@ const mongoose = require('mongoose');
 const Incident = require('./models/Incident');
 
 const animals = ['Snake', 'Bees/Wasps', 'Ants', 'Lizard', 'Cockroaches', 'Stray Dog', 'Stray Cat', 'Spider', 'Rat/Mouse', 'Other'];
-const locations = ['Main Building', 'Library', 'Cafeteria', 'Parking Lot', 'Sports Fields', 'Residence', 'IT Labs', 'Admin Block', 'Garden Area', 'Other'];
+const locations = [
+  'Classroom Alpha','Classroom Beta','Classroom Delta','Classroom Theta','Classroom Eta','Classroom Tau',
+  'Classroom Gamma','Classroom Sigma','Classroom Omega','Classroom Upsilon','Classroom Pi','Classroom Rho',
+  'Classroom Lambda','Classroom Omikron',
+  'Residence Antwerp','Residence Hasselt','Residence Brussels','Residence Leuven','Residence Genk',
+  'Residence Diepenbeek','Residence Mechelen','Residence Namur','Residence Kortrijk','Residence Tienen','Residence Oostende',
+  'Library','Administration Office','Boardroom','Marketing','Virtual Room','Lecturers','Printing','Server Room / Kappa','Gunsel Offices',
+  'Tuck Shop','Cafeteria','Botlhale Village',
+  'Directors Parking','Staff Parking','Visitor Parking','Student Parking',
+  'Basketball Court','Chess Area','Sports Fields',
+  'Aeronautical Centre','Main Gate'
+];
 const severities = ['Low', 'Medium', 'High', 'Critical'];
 const statuses = ['Pending', 'Reviewed', 'In Progress', 'Resolved'];
 const names = ['Thabo Mokoena', 'Priya Naidoo', 'James van der Berg', 'Nomsa Dlamini', 'Kyle Pretorius', 'Zanele Khumalo', 'Marco da Silva', 'Lerato Sithole', 'Ruan Botha', 'Ayesha Patel'];
