@@ -3439,3 +3439,27 @@ input, select, textarea, button {
     max-height: 300px;
   }
 }
+
+/* ── Safety Tip Box ─────────────────────────────────────────── */
+.safety-tip-box {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  border-radius: var(--r-md);
+  padding: 0.9rem 1rem;
+  margin: 1rem 0;
+  text-align: left;
+}
+.safety-tip-icon {
+  color: var(--sky);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.safety-tip-text {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--text);
+}

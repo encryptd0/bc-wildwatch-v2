@@ -133,6 +133,10 @@ document.addEventListener('DOMContentLoaded', function() {
       if (data.success) {
         document.getElementById('reportForm').style.display = 'none';
         document.getElementById('incidentId').textContent = data.incidentId;
+        if (data.safetyTip) {
+          document.getElementById('safetyTipText').textContent = data.safetyTip;
+          document.getElementById('safetyTipBox').style.display = 'flex';
+        }
         document.getElementById('successCard').style.display = 'block';
         showToast('Report submitted successfully!', 'success');
       } else {

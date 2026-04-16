@@ -1,6 +1,7 @@
 const Incident = require('../models/Incident');
 const cloudinary = require('cloudinary').v2;
 const { connectDB } = require('../lib/db');
+const Groq = require('groq-sdk');
 
 // Configure cloudinary if env vars present
 if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_CLOUD_NAME !== 'optional') {
@@ -84,7 +85,28 @@ exports.submitIncident = async (req, res) => {
 
     await incident.save();
 
-    res.json({ success: true, incidentId: incident._id.toString().slice(-8).toUpperCase() });
+    // Generate a short AI safety tip for the reporter
+    let safetyTip = null;
+    const groqKey = process.env.GROQ_API_KEY;
+    if (groqKey) {
+      try {
+        const groq = new Groq({ apiKey: groqKey });
+        const completion = await groq.chat.completions.create({
+          model: 'llama-3.1-8b-instant',
+          messages: [{
+            role: 'user',
+            content: `A ${severity} severity ${animalType} sighting was just reported at a campus. Give 2–3 sentences of practical safety advice for a student nearby. Be direct and calm. No markdown, no bullet points, plain sentences only.`
+          }],
+          max_tokens: 120,
+          temperature: 0.5
+        });
+        safetyTip = completion.choices[0]?.message?.content?.trim() || null;
+      } catch (_) {
+        // Non-fatal — tip is optional
+      }
+    }
+
+    res.json({ success: true, incidentId: incident._id.toString().slice(-8).toUpperCase(), safetyTip });
   } catch (err) {
     console.error(err);
     if (err.name === 'ValidationError') {
